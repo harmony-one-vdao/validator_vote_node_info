@@ -1,0 +1,112 @@
+from requests import post, Session, get
+from json import dump, load
+import csv
+import re
+from os.path import join
+
+from core.one_to_eth import convert_one_to_hex
+from includes.config import *
+from includes.blacklist import blacklist, updated_but_vers_not_found
+
+
+def display_vote_stats(
+    voted_no_weight: int, voted_yes_weight: int, binance_kucoin: int
+) -> None:
+
+    places = 1000000000000000000
+    _, total_stake = call_api(network_info_lite)
+    total_stake = round((float(total_stake["liveEpochTotalStake"]) / places))
+    number_51 = round((total_stake / 100) * 51)
+
+    binance_kucoin = binance_kucoin // places
+    no = voted_no_weight // places
+    yes = voted_yes_weight // places
+    no_perc = round(((no / total_stake) * 100), 2)
+    yes_perc = round(((yes / total_stake) * 100), 2)
+    binance_kucoin_perc = round(((binance_kucoin / total_stake) * 100), 2)
+    minus_bk = int(total_stake - binance_kucoin - yes - no)
+
+    perc_diff = 51 - yes_perc
+    minus_bk_perc = round(100 - no_perc - yes_perc - binance_kucoin_perc, 2)
+
+    number_left_to_pass = round((total_stake / 100) * perc_diff)
+
+    print(f"\nTotal Stake         ::  {total_stake:,}")
+    print(f"Yes Vote Weight     ::  {yes:,}")
+    print(f"No Vote Weight      ::  {no:,}")
+    print(f"Voting Stake % YES  ::  {yes_perc} %")
+    print(f"Voting Stake % NO   ::  {no_perc} %")
+    print(f"51 % of total       ::  {number_51:,}")
+    print(f"Needed to make 51%  ::  {number_left_to_pass:,}")
+    print(f"Binance Kucoin      ::  {binance_kucoin:,}")
+    print(f"Binance Kucoin %    ::  {binance_kucoin_perc} %")
+    print(f"Weight left No B&K  ::  {minus_bk:,}")
+    print(f"% left No B&K       ::  {minus_bk_perc} %\n")
+
+
+def display_blskey_stats(
+    active_validators: int, is_updated: int, not_updated: int
+) -> None:
+    print(f"\n\tNumber Active Validators       ::  {active_validators} ")
+    print(f"\tHas Updated to latest version  ::  {is_updated:,}")
+    print(f"\tNot Updated to latest version  ::  {not_updated} \n")
+
+
+def save_csv(fn: str, data: list, header: list) -> None:
+    with open(join("data", fn), "w", newline="", encoding="utf-8") as csvfile:
+        w = csv.writer(csvfile, delimiter=",")
+        if header:
+            w.writerow(header)
+        for x in data:
+            try:
+                w.writerow(x)
+            except UnicodeDecodeError:
+                print(x)
+
+
+def save_copypasta(fn: str, data: list, start: str = "", end: str = "") -> None:
+    data = list(set(data))
+    with open(join("data", f"{fn}.txt"), "w", encoding="utf-8") as w:
+        for x in data:
+            w.write(f"{start}{x}{end}")
+
+
+def call_api(url: str) -> tuple:
+
+    session = Session()
+    session.headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.1.2222.33 Safari/537.36",
+        "Accept-Encoding": "*",
+        "Connection": "keep-alive",
+    }
+
+    response = session.get(url)
+    print(response)
+    d = response.text
+    if response.status_code == 200:
+        d = response.json()
+    # print(d)
+    return [x for x in d], d
+
+    # with open('voted.json') as j:
+    #     r = load(j)
+    #     return [ x for x in r]
+
+
+def sort_group(contact: str) -> tuple:
+    rtn = []
+    app = "unknown"
+    for k, v in expressions.items():
+        lst = re.findall(v, contact.lower())
+        if lst:
+            rtn = lst
+            app = k
+            break
+    if app == "at_only":
+        rtn = [f"@{x.split('@')[-1]}" for x in rtn]
+    for x in rtn:
+        if x in blacklist:
+            rtn = []
+            break
+    # print(rtn)
+    return rtn, app
