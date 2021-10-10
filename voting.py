@@ -78,12 +78,8 @@ def get_validator_voting_info(
                 else:
                     voted_no_weight += total_delegation
 
-            if w[0] not in [x[0] for x in csv_data]:
-                if check_vote:
-                    if include:
-                        csv_data.append(w)
-                else:
-                    csv_data.append(w)
+            if w[0] not in [x[0] for x in csv_data] and check_vote and include:
+                csv_data.append(w)
 
     save_csv(
         f"{vote_name}-{fn}",
@@ -108,10 +104,10 @@ def get_validator_voting_info(
 
     display_vote_stats(voted_no_weight, voted_yes_weight, binance_kucoin)
 
+if __name__ == "__main__":
+    get_validator_voting_info(vote_fn, num_pages=10, check_vote=True, save_json_data=True)
 
-get_validator_voting_info(vote_fn, num_pages=10, check_vote=True, save_json_data=True)
+    # l = call_api()
+    # print(l)
 
-# l = call_api()
-# print(l)
-
-# sort_group('@ColorReader on Telegram.')
+    # sort_group('@ColorReader on Telegram.')
