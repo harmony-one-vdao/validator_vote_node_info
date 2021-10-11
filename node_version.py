@@ -98,7 +98,7 @@ def get_all_validator_info(
                                 include = False
                                 is_updated += 1
                 if w:
-                    w.append(shards)
+                    hPoolId = find_smartstakeid(address, smartstake_validator_list)
                     grouped, app = sort_group(contact)
                     if app == "unknown":
                         # some validators put twitter in the website column
@@ -109,7 +109,13 @@ def get_all_validator_info(
                             grouped = [contact]
 
                     grouped_data[app] += grouped
-                    w.append(app)
+
+                    w += [
+                        shards,
+                        app,
+                        smartstake_address_summary.format(hPoolId),
+                        smartstake_address_blskeys.format(hPoolId),
+                    ]
 
                     if w not in csv_data:
                         csv_data.append(w)
@@ -128,6 +134,8 @@ def get_all_validator_info(
             "version",
             "shards",
             "group",
+            "Smartstake Summary",
+            "Smartstake BlsKeys",
         ],
     )
 
