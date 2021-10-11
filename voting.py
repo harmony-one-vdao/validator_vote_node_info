@@ -9,6 +9,8 @@ def get_validator_voting_info(
     voted_yes_weight = 0
     voted_no_weight = 0
     binance_kucoin = 0
+    binance_controlled_stake = 0
+
     csv_data = []
     result = []
     grouped_data = {
@@ -50,10 +52,12 @@ def get_validator_voting_info(
 
             if name in ("Binance Staking", "KuCoin"):
                 binance_kucoin += total_delegation
+                if name == 'Binance Staking':
+                    binance_controlled_stake += total_delegation
 
             for d in v["delegations"]:
                 if d["delegator-address"] == binance_wallet:
-                    binance_kucoin += d["amount"]
+                    binance_controlled_stake += d["amount"]
 
             if check_vote:
                 if eth_add not in voted:
@@ -90,7 +94,7 @@ def get_validator_voting_info(
 
     save_csv(
         f"{vote_name}-{fn}",
-        csv_data,
+        csv_data, 
         [
             "Name",
             "Address",
@@ -111,7 +115,7 @@ def get_validator_voting_info(
         with open(all_validators_fn, "w") as j:
             dump(result, j, indent=4)
 
-    display_vote_stats(voted_no_weight, voted_yes_weight, binance_kucoin)
+    display_vote_stats(voted_no_weight, voted_yes_weight, binance_kucoin, binance_controlled_stake)
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ from includes.config import *
 
 
 def display_vote_stats(
-    voted_no_weight: int, voted_yes_weight: int, binance_kucoin: int
+    voted_no_weight: int, voted_yes_weight: int, binance_kucoin: int, binance_controlled_stake: int
 ) -> None:
 
     places = 1000000000000000000
@@ -17,14 +17,17 @@ def display_vote_stats(
     number_51 = round((total_stake / 100) * 51)
 
     binance_kucoin = binance_kucoin // places
+    binance_controlled_stake = binance_controlled_stake // places
     no = voted_no_weight // places
     yes = voted_yes_weight // places
     no_perc = round(((no / total_stake) * 100), 2)
     yes_perc = round(((yes / total_stake) * 100), 2)
     binance_kucoin_perc = round(((binance_kucoin / total_stake) * 100), 2)
+    binance_control_perc = round(((binance_controlled_stake / total_stake) * 100), 2)
+
     minus_bk = int(total_stake - binance_kucoin - yes - no)
 
-    perc_diff = 51 - yes_perc
+    perc_diff = 51 - (yes_perc + no_perc)
     minus_bk_perc = round(100 - no_perc - yes_perc - binance_kucoin_perc, 2)
 
     number_left_to_pass = round((total_stake / 100) * perc_diff)
@@ -40,15 +43,30 @@ def display_vote_stats(
     print(f"Binance Kucoin %    ::  {binance_kucoin_perc} %")
     print(f"Weight left No B&K  ::  {minus_bk:,}")
     print(f"% left No B&K       ::  {minus_bk_perc} %\n")
+    print(f"Binance Control     ::  {binance_controlled_stake:,}")
+    print(f"Binance Control %   ::  {binance_control_perc} %\n")
 
 
 def display_blskey_stats(
-    active_validators: int, is_updated: int, not_updated: int
+    active_validators: int, is_updated: int, not_updated: int, elected: int, elected_is_updated: int, elected_not_updated: int
 ) -> None:
-    print(f"\n\tNumber Active Validators       ::  {active_validators} ")
-    print(f"\tHas Updated to latest version  ::  {is_updated:,}")
-    print(f"\tNot Updated to latest version  ::  {not_updated} \n")
+    perc_not_updated = round((not_updated / active_validators ) * 100, 2 )
+    perc_updated = round((is_updated / active_validators) * 100, 2)
 
+    elec_perc_not_updated = round((elected_not_updated / elected ) * 100, 2 )
+    elec_perc_updated = round((elected_is_updated / elected) * 100, 2)
+
+    print(f"\n\tNumber Active Validators           ::  {active_validators} ")
+    print(f"\tHas Updated to latest version      ::  {is_updated:,}")
+    print(f"\tNot Updated to latest version      ::  {not_updated} \n")
+    print(f"\tHas Updated to latest version %    ::  {perc_updated} % ")
+    print(f"\tNot Updated to latest version %    ::  {perc_not_updated} % \n")
+
+    print(f"\n\tNumber Elected Validators          ::  {elected} ")
+    print(f"\tHas Updated & Elected              ::  {elected_is_updated:,}")
+    print(f"\tNot Updated & Elected              ::  {elected_not_updated} \n")
+    print(f"\tHas Updated & Elected %            ::  {elec_perc_updated} % ")
+    print(f"\tNot Updated & Elected %            ::  {elec_perc_not_updated} % \n")
 
 def save_csv(fn: str, data: list, header: list) -> None:
     with open(join("data", fn), "w", newline="", encoding="utf-8") as csvfile:
