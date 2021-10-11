@@ -4,9 +4,7 @@ import csv
 import re
 from os.path import join
 
-from core.one_to_eth import convert_one_to_hex
 from includes.config import *
-from includes.blacklist import blacklist, updated_but_vers_not_found
 
 
 def display_vote_stats(
@@ -88,10 +86,6 @@ def call_api(url: str) -> tuple:
     # print(d)
     return [x for x in d], d
 
-    # with open('voted.json') as j:
-    #     r = load(j)
-    #     return [ x for x in r]
-
 
 def sort_group(contact: str) -> tuple:
     rtn = []
@@ -110,3 +104,8 @@ def sort_group(contact: str) -> tuple:
             break
     # print(rtn)
     return rtn, app
+
+
+def open_json(fn: str) -> dict:
+    with open(f"{fn}.json") as j:
+        return load(j)

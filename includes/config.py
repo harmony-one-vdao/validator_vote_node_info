@@ -1,4 +1,10 @@
-import os
+import os, sys
+
+sys.path.append(os.path.dirname(__file__))
+
+from core.one_to_eth import convert_one_to_hex
+from includes.blacklist import blacklist, updated_but_vers_not_found
+from core.smartstake_connect import find_smartstakeid, smartstake_base
 
 all_validators_fn = os.path.join("data", "all_validators.json")
 
@@ -14,6 +20,12 @@ network_info_lite = "https://api.stake.hmny.io/networks/harmony/network_info_lit
 
 vote_api = "https://snapshot.hmny.io/api/dao-mainnet/proposal/{}"
 vote_full_address = vote_api.format(vote_address)
+
+smartstake_validator_list_fn = os.path.join("examples", "validator_list")
+smartstake_address_summary = "https://harmony.smartstake.io/val/{}"
+smartstake_address_blskeys = "https://harmony.smartstake.io/keys/{}"
+smartstake_token = "1633942173"
+res, smartstake_validator_list = smartstake_base(smartstake_token)
 
 binance_wallet = "one1tvhgyvt94gkf7sqgude5tu6709kt9vg66pzwfv"
 

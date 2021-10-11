@@ -1,4 +1,5 @@
 from core.util import *
+from core.smartstake_connect import find_smartstakeid
 
 
 def get_validator_voting_info(
@@ -79,6 +80,11 @@ def get_validator_voting_info(
                     voted_no_weight += total_delegation
 
             if w[0] not in [x[0] for x in csv_data] and check_vote and include:
+                hPoolId = find_smartstakeid(address, smartstake_validator_list)
+                w += [
+                    smartstake_address_summary.format(hPoolId),
+                    smartstake_address_blskeys.format(hPoolId),
+                ]
                 csv_data.append(w)
 
     save_csv(
@@ -92,6 +98,8 @@ def get_validator_voting_info(
             "Epos Status",
             "Active Status",
             "Group",
+            "Smartstake Summary",
+            "Smartstake BlsKeys",
         ],
     )
 
@@ -104,8 +112,11 @@ def get_validator_voting_info(
 
     display_vote_stats(voted_no_weight, voted_yes_weight, binance_kucoin)
 
+
 if __name__ == "__main__":
-    get_validator_voting_info(vote_fn, num_pages=10, check_vote=True, save_json_data=True)
+    get_validator_voting_info(
+        vote_fn, num_pages=10, check_vote=True, save_json_data=True
+    )
 
     # l = call_api()
     # print(l)
