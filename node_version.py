@@ -1,9 +1,25 @@
+# internal keys = 49%
+# external keys =51%
+# combine voting power should be more than 66.66%
+#
+# Example from Hardfor 4.3.0
+# 91% of Elected External Nodes Updated
+#
+# 49% (Internal)
+# +
+# 91% of 51% = 46.41% (External)
+#
+# = 46.41 + 49 = 95.41% (Total)
+#
+
+from os import name
 from core.blskeys import *
 
 latest_node_version = "v7174-v4.3.0-0-g15f9b2d1"
 
 # check a single wallets vote
-check_wallet = 'one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a'
+check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
+
 
 def get_all_validator_info(
     fn: str, num_pages: int = 10, save_json_data: bool = False
@@ -21,7 +37,7 @@ def get_all_validator_info(
     result = []
 
     grouped_data = {
-        "email": [], 
+        "email": [],
         "twitter": [],
         "website": [],
         "telegram": [],
@@ -51,10 +67,9 @@ def get_all_validator_info(
             include = False
             is_elected = False
 
-            v, e =create_named_tuple_from_dict(d)
+            v, e = create_named_tuple_from_dict(d)
             if v.address == check_wallet:
                 show = True
-
 
             validators = {x[0]: [] for x in csv_data}
             if not validators.get("name"):
@@ -87,10 +102,9 @@ def get_all_validator_info(
                             include = False
                             not_updated += 1
                             if show:
-                                display_check = f'\n\tWallet *- {check_wallet} -* Node Updated = NO!\n'
+                                display_check = f"\n\tWallet *- {check_wallet} -* Node Updated = NO!\n"
                             if is_elected:
                                 elected_not_updated += 1
-
 
                             w = [
                                 v.name,
@@ -110,22 +124,12 @@ def get_all_validator_info(
                                 if is_elected:
                                     elected_is_updated += 1
                                 if show:
-                                    display_check = f'\n\tWallet *- {check_wallet} -* Node Updated = YES!\n'
-
+                                    display_check = f"\n\tWallet *- {check_wallet} -* Node Updated = YES!\n"
 
                 if w:
                     hPoolId = find_smartstakeid(v.address, smartstake_validator_list)
-                    grouped, app = sort_group(v.security_contact)
-                    if app == "unknown":
-                        # some validators put twitter in the website column
-                        # if unknown, we can try the website column,
-                        # if website == unknown, we will take the unknown from the original v.security_contact..
-                        grouped, app = sort_group(v.website)
-                        if app == "unknown":
-                            grouped = [v.security_contact]
-
+                    grouped, app = parse_contact_info(v)
                     grouped_data[app] += grouped
-
                     w += [
                         shards,
                         app,
@@ -147,22 +151,31 @@ def get_all_validator_info(
             "Epos Status",
             "Active Status",
             # "blskey",
-            "version",
-            "shards",
-            "group",
+            "Version",
+            "Shards",
+            "Group",
             "Smartstake Summary",
             "Smartstake BlsKeys",
         ],
     )
 
-    for k, v in grouped_data.items():
-        save_copypasta(f"{latest_node_version.split('-')[1]}-{k}", v, **sep_map[k])
-
-    if save_json_data:
-        with open(all_validators_fn, "w") as j:
-            dump(result, j, indent=4)
-
-    display_blskey_stats(active_validators, is_updated, not_updated, elected, elected_is_updated, elected_not_updated, display_check)
+    display_stats = (
+        active_validators,
+        is_updated,
+        not_updated,
+        elected,
+        elected_is_updated,
+        elected_not_updated,
+        display_check,
+    )
+    save_and_display(
+        f"{latest_node_version.split('-')[1]}-",
+        result,
+        grouped_data,
+        display_stats,
+        display_blskey_stats,
+        save_json_data=save_json_data,
+    )
 
 
 if __name__ == "__main__":
