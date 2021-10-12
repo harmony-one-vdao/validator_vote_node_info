@@ -4,6 +4,7 @@ import csv
 import re
 from os.path import join
 from collections import namedtuple
+import logging
 
 from includes.config import *
 
@@ -35,6 +36,8 @@ def display_vote_stats(
     binance_kucoin: int,
     binance_controlled_stake: int,
     display_check: str,
+    vote_full_address: str,
+    proposal: str
 ) -> None:
 
     places = 1000000000000000000
@@ -57,22 +60,23 @@ def display_vote_stats(
     minus_bk_perc = round(100 - no_perc - yes_perc - binance_kucoin_perc, 2)
 
     number_left_to_pass = percentage (total_stake, 100, factor=perc_diff) 
-
-    print(f"\n\tTotal Stake         ::  {total_stake:,}\n")
-    print(f"\tYes Vote Weight     ::  {yes:,}")
-    print(f"\tNo Vote Weight      ::  {no:,}\n")
-    print(f"\tVoting Stake % YES  ::  {yes_perc} %")
-    print(f"\tVoting Stake % NO   ::  {no_perc} %\n")
-    print(f"\t{vote_quorum} % of total       ::  {quorum_percentage:,}")
-    print(f"\tNeeded to make 51%  ::  {number_left_to_pass:,}\n")
-    print(f"\tBinance Kucoin      ::  {binance_kucoin:,}")
-    print(f"\tBinance Kucoin %    ::  {binance_kucoin_perc} %")
-    print(f"\tWeight left No B&K  ::  {minus_bk:,}")
-    print(f"\t% left No B&K       ::  {minus_bk_perc} %\n")
-    print(f"\tBinance Control     ::  {binance_controlled_stake:,}")
-    print(f"\tBinance Control %   ::  {binance_control_perc} %\n")
-    print(display_check)
-    print(f'\tSnapshot: {vote_full_address}\n')
+    
+    log.info(f'\nVote Proposal: {proposal}')
+    log.info(f"\n\tTotal Stake         ::  {total_stake:,}\n")
+    log.info(f"\tYes Vote Weight     ::  {yes:,}")
+    log.info(f"\tNo Vote Weight      ::  {no:,}\n")
+    log.info(f"\tVoting Stake % YES  ::  {yes_perc} %")
+    log.info(f"\tVoting Stake % NO   ::  {no_perc} %\n")
+    log.info(f"\t{vote_quorum} % of total       ::  {quorum_percentage:,}")
+    log.info(f"\tNeeded to make 51%  ::  {number_left_to_pass:,}\n")
+    log.info(f"\tBinance Kucoin      ::  {binance_kucoin:,}")
+    log.info(f"\tBinance Kucoin %    ::  {binance_kucoin_perc} %")
+    log.info(f"\tWeight left No B&K  ::  {minus_bk:,}")
+    log.info(f"\t% left No B&K       ::  {minus_bk_perc} %\n")
+    log.info(f"\tBinance Control     ::  {binance_controlled_stake:,}")
+    log.info(f"\tBinance Control %   ::  {binance_control_perc} %\n")
+    log.info(display_check)
+    log.info(f'\tSnapshot: {vote_full_address}\n')
 
 def display_blskey_stats(
     active_validators: int,
@@ -82,6 +86,7 @@ def display_blskey_stats(
     elected_is_updated: int,
     elected_not_updated: int,
     display_check: str,
+    version: str
 ) -> None:
     # internal keys = 49%
     # external keys =51%
@@ -102,23 +107,24 @@ def display_blskey_stats(
     elec_perc_not_updated = percentage(elected_not_updated, elected)
     elec_perc_updated = percentage(elected_is_updated, elected)
 
-    print(f"\n\tNumber Active Validators           ::  {active_validators} ")
-    print(f"\tHas Updated to latest version      ::  {is_updated:,}")
-    print(f"\tNot Updated to latest version      ::  {not_updated} \n")
-    print(f"\tHas Updated to latest version %    ::  {perc_updated} % ")
-    print(f"\tNot Updated to latest version %    ::  {perc_not_updated} % \n")
+    log.info(f'\nNode Version: {version}')
+    log.info(f"\n\tNumber Active Validators           ::  {active_validators} ")
+    log.info(f"\tHas Updated to latest version      ::  {is_updated:,}")
+    log.info(f"\tNot Updated to latest version      ::  {not_updated} \n")
+    log.info(f"\tHas Updated to latest version %    ::  {perc_updated} % ")
+    log.info(f"\tNot Updated to latest version %    ::  {perc_not_updated} % \n")
 
-    print(f"\n\tNumber Elected Validators          ::  {elected} ")
-    print(f"\tHas Updated & Elected              ::  {elected_is_updated:,}")
-    print(f"\tNot Updated & Elected              ::  {elected_not_updated} \n")
-    print(f"\tHas Updated & Elected %            ::  {elec_perc_updated} % ")
-    print(f"\tNot Updated & Elected %            ::  {elec_perc_not_updated} % \n")
-    print(display_check)
+    log.info(f"\n\tNumber Elected Validators          ::  {elected} ")
+    log.info(f"\tHas Updated & Elected              ::  {elected_is_updated:,}")
+    log.info(f"\tNot Updated & Elected              ::  {elected_not_updated} \n")
+    log.info(f"\tHas Updated & Elected %            ::  {elec_perc_updated} % ")
+    log.info(f"\tNot Updated & Elected %            ::  {elec_perc_not_updated} % \n")
+    log.info(display_check)
     
 
 
-def save_csv(fn: str, data: list, header: list) -> None:
-    with open(join("data", fn), "w", newline="", encoding="utf-8") as csvfile:
+def save_csv(data_folder: str, fn: str, data: list, header: list) -> None:
+    with open(join("data", data_folder, fn), "w", newline="", encoding="utf-8") as csvfile:
         w = csv.writer(csvfile, delimiter=",")
         if header:
             w.writerow(header)
@@ -126,12 +132,12 @@ def save_csv(fn: str, data: list, header: list) -> None:
             try:
                 w.writerow(x)
             except UnicodeDecodeError:
-                print(x)
+                log.info(x)
 
 
-def save_copypasta(fn: str, data: list, start: str = "", end: str = "") -> None:
+def save_copypasta(data_folder: str, fn: str, data: list, start: str = "", end: str = "") -> None:
     data = list(set(data))
-    with open(join("data", f"{fn}.txt"), "w", encoding="utf-8") as w:
+    with open(join("data", data_folder, f"{fn}.txt"), "w", encoding="utf-8") as w:
         for x in data:
             w.write(f"{start}{x}{end}")
 
@@ -146,11 +152,11 @@ def call_api(url: str) -> tuple:
     }
 
     response = session.get(url)
-    print(response)
+    log.info(response)
     d = response.text
     if response.status_code == 200:
         d = response.json()
-    # print(d)
+    # log.info(d)
     return [x for x in d], d
 
 
@@ -169,7 +175,7 @@ def sort_group(contact: str) -> tuple:
         if x in blacklist:
             rtn = []
             break
-    # print(rtn)
+    # log.info(rtn)
     return rtn, app
 
 
@@ -200,10 +206,10 @@ def save_and_display(
 ) -> None:
 
     for k, v in grouped_data.items():
-        save_copypasta(fn + k, v, **sep_map[k])
+        save_copypasta(fn, f"{fn}-" + k, v, **sep_map[k])
 
     if save_json_data:
         with open(all_validators_fn, "w") as j:
             dump(result, j, indent=4)
 
-    display(*display_stats)
+    display(*display_stats,fn)

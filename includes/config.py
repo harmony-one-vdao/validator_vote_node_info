@@ -14,9 +14,7 @@ vote_quorum = 51
 
 all_validators_fn = os.path.join("data", "all_validators.json")
 
-vote_address = "QmTy415weDCQd88QBaBYBSW6Ux75JiraMuyjwtSMEaEJBQ"
-vote_name = "HIP-9"
-vote_fn = f"validator_vote-{vote_name}.csv"
+vote_fn = "validator_vote.csv"
 
 node_version_fn = "validator_node_versions.csv"
 prometheus = "https://gateway.harmony.one/api/v1/metrics"
@@ -25,7 +23,6 @@ harmony_api = "https://api.harmony.one"
 network_info_lite = "https://api.stake.hmny.io/networks/harmony/network_info_lite"
 
 vote_api = "https://snapshot.hmny.io/api/dao-mainnet/proposal/{}"
-vote_full_address = vote_api.format(vote_address)
 
 smartstake_validator_list_fn = os.path.join("examples", "validator_list")
 smartstake_address_summary = "https://harmony.smartstake.io/val/{}"
@@ -56,14 +53,30 @@ sep_map = {
 # {'not eligible to be elected next epoch', 'eligible to be elected next epoch', 'currently elected'}
 not_eligible_message = "not eligible to be elected next epoch"
 
-data_path = "data"
-
-
-def create_data_path(data_path: str) -> None:
+def create_data_path(pth: str, data_path: str = 'data') -> os.path:
     cwd = os.getcwd()
-    p = os.path.join(cwd, data_path)
+    p = os.path.join(cwd, data_path, pth)
     if not os.path.exists(p):
         os.mkdir(p)
+    return p
+
+create_data_path((''))
 
 
-create_data_path(data_path)
+import logging
+
+file_handler = logging.FileHandler(filename=os.path.join('data', 'data.log'))
+stdout_handler = logging.StreamHandler(sys.stdout)
+handlers = [file_handler, stdout_handler]
+
+logging.basicConfig(
+    level=logging.INFO, 
+    format='%(message)s',
+    handlers=handlers
+)
+
+log = logging.getLogger()
+
+def create_folders_change_handler(name):
+    pth = create_data_path(name)
+    # TODO: Handler to change log filename..

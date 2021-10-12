@@ -6,9 +6,8 @@ latest_node_version = "v7174-v4.3.0-0-g15f9b2d1"
 # check a single wallets Node version.
 check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
 
-
-def get_all_validator_info(
-    fn: str, num_pages: int = 10, save_json_data: bool = False
+def validator_node_version(
+    fn: str, latest_version: str, num_pages: int = 10, save_json_data: bool = False
 ) -> None:
 
     active_validators = 0
@@ -36,13 +35,15 @@ def get_all_validator_info(
     for i in range(0, num_pages):
         result, data = get_all_validators(i, result)
         if not data:
-            print(f"NO MORE DATA.. ENDING ON PAGE {i+1}.")
+            log.info(f"NO MORE DATA.. ENDING ON PAGE {i+1}.")
             break
         
         for d in data:
             show = False
             include = False
             is_elected = False
+            display_check = f'Wallet {check_wallet} NOT Found.'
+
 
             v, e = create_named_tuple_from_dict(d)
             if v.address == check_wallet:
@@ -118,6 +119,7 @@ def get_all_validator_info(
                         csv_data.append(w)
 
     save_csv(
+        latest_version,
         fn,
         csv_data,
         [
@@ -146,7 +148,7 @@ def get_all_validator_info(
         display_check,
     )
     save_and_display(
-        f"{latest_node_version.split('-')[1]}-",
+        latest_version,
         result,
         grouped_data,
         display_stats,
@@ -156,4 +158,6 @@ def get_all_validator_info(
 
 
 if __name__ == "__main__":
-    get_all_validator_info(node_version_fn, num_pages=10, save_json_data=True)
+    latest_version = latest_node_version.split('-')[1]
+    create_folders_change_handler(latest_version)
+    validator_node_version(node_version_fn, latest_version, num_pages=10, save_json_data=True)
