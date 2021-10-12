@@ -9,6 +9,8 @@ def get_validator_voting_info(
     voted_yes_weight = 0
     voted_no_weight = 0
     binance_kucoin = 0
+    binance_controlled_stake = 0
+
     csv_data = []
     result = []
     grouped_data = {
@@ -50,46 +52,49 @@ def get_validator_voting_info(
 
             if name in ("Binance Staking", "KuCoin"):
                 binance_kucoin += total_delegation
+                if name == 'Binance Staking':
+                    binance_controlled_stake += total_delegation
 
             for d in v["delegations"]:
                 if d["delegator-address"] == binance_wallet:
-                    binance_kucoin += d["amount"]
+                    binance_controlled_stake += d["amount"]
 
             if check_vote:
                 if eth_add not in voted:
                     include = True
 
-            w = [name, address, contact, website, epos_status, active_status]
-            grouped, app = sort_group(contact)
-            if app == "unknown":
-                # some validators put twitter in the website column
-                # if unknown, we can try the website column,
-                # if website == unknown, we will take the unknown from the original contact..
-                grouped, app = sort_group(website)
+            if active_status == "active":
+                w = [name, address, contact, website, epos_status, active_status]
+                grouped, app = sort_group(contact)
                 if app == "unknown":
-                    grouped = [contact]
-            if include:
-                grouped_data[app] += grouped
-                w.append(app)
-            # Already Voted, Check Weight
-            else:
-                choice = voted_results[eth_add]["msg"]["payload"]["choice"]
-                if int(choice) == 1:
-                    voted_yes_weight += total_delegation
+                    # some validators put twitter in the website column
+                    # if unknown, we can try the website column,
+                    # if website == unknown, we will take the unknown from the original contact..
+                    grouped, app = sort_group(website)
+                    if app == "unknown":
+                        grouped = [contact]
+                if include:
+                    grouped_data[app] += grouped
+                    w.append(app)
+                # Already Voted, Check Weight
                 else:
-                    voted_no_weight += total_delegation
+                    choice = voted_results[eth_add]["msg"]["payload"]["choice"]
+                    if int(choice) == 1:
+                        voted_yes_weight += total_delegation
+                    else:
+                        voted_no_weight += total_delegation
 
-            if w[0] not in [x[0] for x in csv_data] and check_vote and include:
-                hPoolId = find_smartstakeid(address, smartstake_validator_list)
-                w += [
-                    smartstake_address_summary.format(hPoolId),
-                    smartstake_address_blskeys.format(hPoolId),
-                ]
-                csv_data.append(w)
+                if w[0] not in [x[0] for x in csv_data] and check_vote and include:
+                    hPoolId = find_smartstakeid(address, smartstake_validator_list)
+                    w += [
+                        smartstake_address_summary.format(hPoolId),
+                        smartstake_address_blskeys.format(hPoolId),
+                    ]
+                    csv_data.append(w)
 
     save_csv(
         f"{vote_name}-{fn}",
-        csv_data,
+        csv_data, 
         [
             "Name",
             "Address",
@@ -110,7 +115,7 @@ def get_validator_voting_info(
         with open(all_validators_fn, "w") as j:
             dump(result, j, indent=4)
 
-    display_vote_stats(voted_no_weight, voted_yes_weight, binance_kucoin)
+    display_vote_stats(voted_no_weight, voted_yes_weight, binance_kucoin, binance_controlled_stake)
 
 
 if __name__ == "__main__":

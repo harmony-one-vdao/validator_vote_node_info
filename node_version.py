@@ -11,11 +11,15 @@ def get_all_validator_info(
     not_updated = 0
     is_updated = 0
 
+    elected = 0
+    elected_not_updated = 0
+    elected_is_updated = 0
+
     csv_data = []
     result = []
 
     grouped_data = {
-        "email": [],
+        "email": [], 
         "twitter": [],
         "website": [],
         "telegram": [],
@@ -43,6 +47,7 @@ def get_all_validator_info(
         for x in data["result"]:
 
             include = False
+            is_elected = False
 
             v = x["validator"]
 
@@ -64,6 +69,10 @@ def get_all_validator_info(
                 w = []
                 active_validators += 1
 
+                if epos_status == "currently elected":
+                    elected += 1
+                    is_elected = True
+
                 for blskey in keys:
                     found, msg, versions, shard = bls_key_version(
                         blskey, prometheus_data
@@ -81,6 +90,8 @@ def get_all_validator_info(
                         ):
                             include = False
                             not_updated += 1
+                            if is_elected:
+                                elected_not_updated += 1
 
                             w = [
                                 name,
@@ -97,6 +108,8 @@ def get_all_validator_info(
                             if include:
                                 include = False
                                 is_updated += 1
+                                if is_elected:
+                                    elected_is_updated += 1
                 if w:
                     hPoolId = find_smartstakeid(address, smartstake_validator_list)
                     grouped, app = sort_group(contact)
@@ -146,7 +159,7 @@ def get_all_validator_info(
         with open(all_validators_fn, "w") as j:
             dump(result, j, indent=4)
 
-    display_blskey_stats(active_validators, is_updated, not_updated)
+    display_blskey_stats(active_validators, is_updated, not_updated, elected, elected_is_updated, elected_not_updated)
 
 
 if __name__ == "__main__":
