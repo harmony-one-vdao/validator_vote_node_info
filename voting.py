@@ -26,19 +26,10 @@ def get_validator_voting_info(
     }
 
     for i in range(0, num_pages):
-        d = {
-            "jsonrpc": "2.0",
-            "method": "hmy_getAllValidatorInformation",
-            "params": [i],
-            "id": 1,
-        }
-        data = post(harmony_api, json=d).json()["result"]
-
+        result, data = get_all_validators(i, result)
         if not data:
             print(f"NO MORE DATA.. ENDING ON PAGE {i+1}.")
             break
-
-        result += data
 
         for d in data:
             include = False

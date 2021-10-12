@@ -6,6 +6,12 @@ from core.one_to_eth import convert_one_to_hex
 from includes.blacklist import blacklist, updated_but_vers_not_found
 from core.smartstake_connect import find_smartstakeid, smartstake_base
 
+external_nodes_weight = 51 # %
+internal_nodes_weight = 49 # %
+combined_voting_power_min = 66.66 # %
+
+vote_quorum = 51
+
 all_validators_fn = os.path.join("data", "all_validators.json")
 
 vote_address = "QmTy415weDCQd88QBaBYBSW6Ux75JiraMuyjwtSMEaEJBQ"

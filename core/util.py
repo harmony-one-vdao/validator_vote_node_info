@@ -7,6 +7,16 @@ from collections import namedtuple
 
 from includes.config import *
 
+def get_all_validators(i: int, result: list) -> dict:
+    d = {
+        "jsonrpc": "2.0",
+        "method": "hmy_getAllValidatorInformation",
+        "params": [i],
+        "id": 1,
+    }
+    data = post(harmony_api, json=d).json()["result"]
+    result += data
+    return result, data
 
 def create_named_tuple_from_dict(d: dict) -> tuple:
     v = namedtuple("Validator", [d.replace("-", "_") for d in d["validator"].keys()])(
@@ -15,6 +25,9 @@ def create_named_tuple_from_dict(d: dict) -> tuple:
     e = namedtuple("Epoch", [d.replace("-", "_") for d in d.keys()])(*d.values())
     return v, e
 
+
+def percentage(x: float, y: float, factor: float = 100, dp: int = 2) -> float:
+    return round(((x / y) * factor), dp)
 
 def display_vote_stats(
     voted_no_weight: int,
@@ -27,39 +40,39 @@ def display_vote_stats(
     places = 1000000000000000000
     _, total_stake = call_api(network_info_lite)
     total_stake = round((float(total_stake["liveEpochTotalStake"]) / places))
-    number_51 = round((total_stake / 100) * 51)
+    quorum_percentage = percentage (total_stake, 100, factor=vote_quorum)
 
     binance_kucoin = binance_kucoin // places
     binance_controlled_stake = binance_controlled_stake // places
     no = voted_no_weight // places
     yes = voted_yes_weight // places
-    no_perc = round(((no / total_stake) * 100), 2)
-    yes_perc = round(((yes / total_stake) * 100), 2)
-    binance_kucoin_perc = round(((binance_kucoin / total_stake) * 100), 2)
-    binance_control_perc = round(((binance_controlled_stake / total_stake) * 100), 2)
+    no_perc = percentage(no, total_stake)
+    yes_perc = percentage(yes, total_stake)
+    binance_kucoin_perc = percentage(binance_kucoin, total_stake)
+    binance_control_perc = percentage(binance_controlled_stake, total_stake)
 
     minus_bk = int(total_stake - binance_kucoin - yes - no)
 
-    perc_diff = 51 - (yes_perc + no_perc)
+    perc_diff = vote_quorum - (yes_perc + no_perc)
     minus_bk_perc = round(100 - no_perc - yes_perc - binance_kucoin_perc, 2)
 
-    number_left_to_pass = round((total_stake / 100) * perc_diff)
+    number_left_to_pass = percentage (total_stake, 100, factor=perc_diff) 
 
-    print(f"\nTotal Stake         ::  {total_stake:,}")
-    print(f"Yes Vote Weight     ::  {yes:,}")
-    print(f"No Vote Weight      ::  {no:,}")
-    print(f"Voting Stake % YES  ::  {yes_perc} %")
-    print(f"Voting Stake % NO   ::  {no_perc} %")
-    print(f"51 % of total       ::  {number_51:,}")
-    print(f"Needed to make 51%  ::  {number_left_to_pass:,}")
-    print(f"Binance Kucoin      ::  {binance_kucoin:,}")
-    print(f"Binance Kucoin %    ::  {binance_kucoin_perc} %")
-    print(f"Weight left No B&K  ::  {minus_bk:,}")
-    print(f"% left No B&K       ::  {minus_bk_perc} %\n")
-    print(f"Binance Control     ::  {binance_controlled_stake:,}")
-    print(f"Binance Control %   ::  {binance_control_perc} %\n")
+    print(f"\n\tTotal Stake         ::  {total_stake:,}\n")
+    print(f"\tYes Vote Weight     ::  {yes:,}")
+    print(f"\tNo Vote Weight      ::  {no:,}\n")
+    print(f"\tVoting Stake % YES  ::  {yes_perc} %")
+    print(f"\tVoting Stake % NO   ::  {no_perc} %\n")
+    print(f"\t{vote_quorum} % of total       ::  {quorum_percentage:,}")
+    print(f"\tNeeded to make 51%  ::  {number_left_to_pass:,}\n")
+    print(f"\tBinance Kucoin      ::  {binance_kucoin:,}")
+    print(f"\tBinance Kucoin %    ::  {binance_kucoin_perc} %")
+    print(f"\tWeight left No B&K  ::  {minus_bk:,}")
+    print(f"\t% left No B&K       ::  {minus_bk_perc} %\n")
+    print(f"\tBinance Control     ::  {binance_controlled_stake:,}")
+    print(f"\tBinance Control %   ::  {binance_control_perc} %\n")
     print(display_check)
-
+    print(f'\tSnapshot: {vote_full_address}\n')
 
 def display_blskey_stats(
     active_validators: int,
@@ -70,11 +83,24 @@ def display_blskey_stats(
     elected_not_updated: int,
     display_check: str,
 ) -> None:
-    perc_not_updated = round((not_updated / active_validators) * 100, 2)
-    perc_updated = round((is_updated / active_validators) * 100, 2)
+    # internal keys = 49%
+    # external keys =51%
+    # combine voting power should be more than 66.66%
+    #
+    # Example from Hardfork 4.3.0
+    # 91% of Elected External Nodes Updated
+    #TODO: calculate by number of BLSKEYS not validtors for more accurate results.
+    # 49% (Internal)
+    # +
+    # 91% of 51% = 46.41% (External)
+    #
+    # = 46.41 + 49 = 95.41% (Total)
+    #
+    perc_not_updated = percentage(not_updated, active_validators)
+    perc_updated = percentage(is_updated, active_validators)
 
-    elec_perc_not_updated = round((elected_not_updated / elected) * 100, 2)
-    elec_perc_updated = round((elected_is_updated / elected) * 100, 2)
+    elec_perc_not_updated = percentage(elected_not_updated, elected)
+    elec_perc_updated = percentage(elected_is_updated, elected)
 
     print(f"\n\tNumber Active Validators           ::  {active_validators} ")
     print(f"\tHas Updated to latest version      ::  {is_updated:,}")
@@ -88,6 +114,7 @@ def display_blskey_stats(
     print(f"\tHas Updated & Elected %            ::  {elec_perc_updated} % ")
     print(f"\tNot Updated & Elected %            ::  {elec_perc_not_updated} % \n")
     print(display_check)
+    
 
 
 def save_csv(fn: str, data: list, header: list) -> None:
