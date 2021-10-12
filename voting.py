@@ -1,6 +1,8 @@
 from core.util import *
 from core.smartstake_connect import find_smartstakeid
 
+# check a single wallets vote
+check_wallet = 'one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a'
 
 def get_validator_voting_info(
     fn: str, num_pages: int = 10, check_vote: bool = True, save_json_data: bool = False
@@ -50,6 +52,10 @@ def get_validator_voting_info(
             total_delegation = x["total-delegation"]
             eth_add = convert_one_to_hex(address)
 
+            show = False
+            if address == check_wallet:
+                show = True
+
             if name in ("Binance Staking", "KuCoin"):
                 binance_kucoin += total_delegation
                 if name == 'Binance Staking':
@@ -76,13 +82,18 @@ def get_validator_voting_info(
                 if include:
                     grouped_data[app] += grouped
                     w.append(app)
+
                 # Already Voted, Check Weight
                 else:
                     choice = voted_results[eth_add]["msg"]["payload"]["choice"]
                     if int(choice) == 1:
                         voted_yes_weight += total_delegation
+                        if show:
+                            print(f'\n\tWallet *- {check_wallet} -* Voted Yes!\n')
                     else:
                         voted_no_weight += total_delegation
+                        if show:
+                            print(f'\n\tWallet *- {check_wallet} -* Voted NO!')
 
                 if w[0] not in [x[0] for x in csv_data] and check_vote and include:
                     hPoolId = find_smartstakeid(address, smartstake_validator_list)
