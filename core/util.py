@@ -3,12 +3,18 @@ from json import dump, load
 import csv
 import re
 from os.path import join
+from collections import namedtuple
 
 from includes.config import *
 
 
+def create_named_tuple_from_dict(d: dict) -> tuple:
+    v = namedtuple('Validator', [d.replace('-', '_') for d in d['validator'].keys()])(*d['validator'].values())
+    e = namedtuple('Epoch', [d.replace('-', '_') for d in d.keys()])(*d.values())
+    return v, e
+
 def display_vote_stats(
-    voted_no_weight: int, voted_yes_weight: int, binance_kucoin: int, binance_controlled_stake: int
+    voted_no_weight: int, voted_yes_weight: int, binance_kucoin: int, binance_controlled_stake: int, display_check: str
 ) -> None:
 
     places = 1000000000000000000
@@ -45,10 +51,11 @@ def display_vote_stats(
     print(f"% left No B&K       ::  {minus_bk_perc} %\n")
     print(f"Binance Control     ::  {binance_controlled_stake:,}")
     print(f"Binance Control %   ::  {binance_control_perc} %\n")
+    print(display_check)
 
 
 def display_blskey_stats(
-    active_validators: int, is_updated: int, not_updated: int, elected: int, elected_is_updated: int, elected_not_updated: int
+    active_validators: int, is_updated: int, not_updated: int, elected: int, elected_is_updated: int, elected_not_updated: int, display_check: str
 ) -> None:
     perc_not_updated = round((not_updated / active_validators ) * 100, 2 )
     perc_updated = round((is_updated / active_validators) * 100, 2)
@@ -67,6 +74,7 @@ def display_blskey_stats(
     print(f"\tNot Updated & Elected              ::  {elected_not_updated} \n")
     print(f"\tHas Updated & Elected %            ::  {elec_perc_updated} % ")
     print(f"\tNot Updated & Elected %            ::  {elec_perc_not_updated} % \n")
+    print(display_check)
 
 def save_csv(fn: str, data: list, header: list) -> None:
     with open(join("data", fn), "w", newline="", encoding="utf-8") as csvfile:
