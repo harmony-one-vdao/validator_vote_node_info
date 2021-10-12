@@ -1,3 +1,17 @@
+# internal keys = 49%
+# external keys =51%
+# combine voting power should be more than 66.66%
+# 
+# Example from Hardfor 4.3.0
+# 91% of Elected External Nodes Updated
+#
+# 49% (Internal)
+# +
+# 91% of 51% = 46.41% (External)
+#
+# = 46.41 + 49 = 95.41% (Total)
+#
+
 from core.blskeys import *
 
 latest_node_version = "v7174-v4.3.0-0-g15f9b2d1"
