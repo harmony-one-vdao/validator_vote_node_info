@@ -2,7 +2,8 @@ from core.util import *
 from core.smartstake_connect import find_smartstakeid
 
 # check a single wallets vote
-check_wallet = 'one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a'
+check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
+
 
 def get_validator_voting_info(
     fn: str, num_pages: int = 10, save_json_data: bool = False
@@ -52,17 +53,23 @@ def get_validator_voting_info(
 
             if v.name in ("Binance Staking", "KuCoin"):
                 binance_kucoin += e.total_delegation
-                if v.name == 'Binance Staking':
+                if v.name == "Binance Staking":
                     binance_controlled_stake += e.total_delegation
 
             for d in v.delegations:
                 if d["delegator-address"] == binance_wallet:
                     binance_controlled_stake += d["amount"]
 
-
             if e.active_status == "active":
-                w = [v.name, v.address, v.security_contact, v.website, e.epos_status, e.active_status]
-                grouped, app = parse_contact_info(v) 
+                w = [
+                    v.name,
+                    v.address,
+                    v.security_contact,
+                    v.website,
+                    e.epos_status,
+                    e.active_status,
+                ]
+                grouped, app = parse_contact_info(v)
 
                 if eth_add not in voted:
                     include = True
@@ -75,11 +82,13 @@ def get_validator_voting_info(
                     if int(choice) == 1:
                         voted_yes_weight += e.total_delegation
                         if show:
-                            display_check = f'\n\tWallet *- {check_wallet} -* Voted Yes!\n'
+                            display_check = (
+                                f"\n\tWallet *- {check_wallet} -* Voted Yes!\n"
+                            )
                     else:
                         voted_no_weight += e.total_delegation
                         if show:
-                            display_check = f'\n\tWallet *- {check_wallet} -* Voted NO!'
+                            display_check = f"\n\tWallet *- {check_wallet} -* Voted NO!"
 
                 if w[0] not in [x[0] for x in csv_data] and include:
                     hPoolId = find_smartstakeid(v.address, smartstake_validator_list)
@@ -91,7 +100,7 @@ def get_validator_voting_info(
 
     save_csv(
         f"{vote_name}-{fn}",
-        csv_data, 
+        csv_data,
         [
             "Name",
             "Address",
@@ -105,14 +114,25 @@ def get_validator_voting_info(
         ],
     )
 
-    display_stats = voted_no_weight, voted_yes_weight, binance_kucoin, binance_controlled_stake, display_check
-    save_and_display(f"{vote_name}-", result, grouped_data, display_stats, display_vote_stats, save_json_data=save_json_data)
+    display_stats = (
+        voted_no_weight,
+        voted_yes_weight,
+        binance_kucoin,
+        binance_controlled_stake,
+        display_check,
+    )
+    save_and_display(
+        f"{vote_name}-",
+        result,
+        grouped_data,
+        display_stats,
+        display_vote_stats,
+        save_json_data=save_json_data,
+    )
 
 
 if __name__ == "__main__":
-    get_validator_voting_info(
-        vote_fn, num_pages=10, save_json_data=True
-    )
+    get_validator_voting_info(vote_fn, num_pages=10, save_json_data=True)
 
     # l = call_api()
     # print(l)

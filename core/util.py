@@ -9,12 +9,19 @@ from includes.config import *
 
 
 def create_named_tuple_from_dict(d: dict) -> tuple:
-    v = namedtuple('Validator', [d.replace('-', '_') for d in d['validator'].keys()])(*d['validator'].values())
-    e = namedtuple('Epoch', [d.replace('-', '_') for d in d.keys()])(*d.values())
+    v = namedtuple("Validator", [d.replace("-", "_") for d in d["validator"].keys()])(
+        *d["validator"].values()
+    )
+    e = namedtuple("Epoch", [d.replace("-", "_") for d in d.keys()])(*d.values())
     return v, e
 
+
 def display_vote_stats(
-    voted_no_weight: int, voted_yes_weight: int, binance_kucoin: int, binance_controlled_stake: int, display_check: str
+    voted_no_weight: int,
+    voted_yes_weight: int,
+    binance_kucoin: int,
+    binance_controlled_stake: int,
+    display_check: str,
 ) -> None:
 
     places = 1000000000000000000
@@ -55,12 +62,18 @@ def display_vote_stats(
 
 
 def display_blskey_stats(
-    active_validators: int, is_updated: int, not_updated: int, elected: int, elected_is_updated: int, elected_not_updated: int, display_check: str
+    active_validators: int,
+    is_updated: int,
+    not_updated: int,
+    elected: int,
+    elected_is_updated: int,
+    elected_not_updated: int,
+    display_check: str,
 ) -> None:
-    perc_not_updated = round((not_updated / active_validators ) * 100, 2 )
+    perc_not_updated = round((not_updated / active_validators) * 100, 2)
     perc_updated = round((is_updated / active_validators) * 100, 2)
 
-    elec_perc_not_updated = round((elected_not_updated / elected ) * 100, 2 )
+    elec_perc_not_updated = round((elected_not_updated / elected) * 100, 2)
     elec_perc_updated = round((elected_is_updated / elected) * 100, 2)
 
     print(f"\n\tNumber Active Validators           ::  {active_validators} ")
@@ -75,6 +88,7 @@ def display_blskey_stats(
     print(f"\tHas Updated & Elected %            ::  {elec_perc_updated} % ")
     print(f"\tNot Updated & Elected %            ::  {elec_perc_not_updated} % \n")
     print(display_check)
+
 
 def save_csv(fn: str, data: list, header: list) -> None:
     with open(join("data", fn), "w", newline="", encoding="utf-8") as csvfile:
@@ -112,6 +126,7 @@ def call_api(url: str) -> tuple:
     # print(d)
     return [x for x in d], d
 
+
 def sort_group(contact: str) -> tuple:
     rtn = []
     app = "unknown"
@@ -130,6 +145,7 @@ def sort_group(contact: str) -> tuple:
     # print(rtn)
     return rtn, app
 
+
 def parse_contact_info(v: namedtuple) -> tuple:
     grouped, app = sort_group(v.security_contact)
     if app == "unknown":
@@ -146,7 +162,15 @@ def open_json(fn: str) -> dict:
     with open(f"{fn}.json") as j:
         return load(j)
 
-def save_and_display(fn: str, result: dict, grouped_data: dict, display_stats: tuple, display: object, save_json_data: bool = True) -> None:
+
+def save_and_display(
+    fn: str,
+    result: dict,
+    grouped_data: dict,
+    display_stats: tuple,
+    display: object,
+    save_json_data: bool = True,
+) -> None:
 
     for k, v in grouped_data.items():
         save_copypasta(fn + k, v, **sep_map[k])
