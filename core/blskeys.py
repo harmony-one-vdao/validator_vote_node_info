@@ -73,4 +73,4 @@ if __name__ == "__main__":
         blskeys[0], get("https://gateway.harmony.one/api/v1/metrics").json()["data"]
     )
 
-    print(res, msg, versions, shard)
+    log.info(res, msg, versions, shard)

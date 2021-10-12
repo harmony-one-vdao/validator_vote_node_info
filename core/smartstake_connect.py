@@ -33,4 +33,4 @@ if __name__ == "__main__":
     token = "1634037654"
     res, msg = smartstake_base(token)
 
-    print(res, msg)
+    log.info(res, msg)

@@ -1,28 +1,13 @@
-# internal keys = 49%
-# external keys =51%
-# combine voting power should be more than 66.66%
-#
-# Example from Hardfor 4.3.0
-# 91% of Elected External Nodes Updated
-#
-# 49% (Internal)
-# +
-# 91% of 51% = 46.41% (External)
-#
-# = 46.41 + 49 = 95.41% (Total)
-#
-
 from os import name
 from core.blskeys import *
 
 latest_node_version = "v7174-v4.3.0-0-g15f9b2d1"
 
-# check a single wallets vote
+# check a single wallets Node version.
 check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
 
-
-def get_all_validator_info(
-    fn: str, num_pages: int = 10, save_json_data: bool = False
+def validator_node_version(
+    fn: str, latest_version: str, num_pages: int = 10, save_json_data: bool = False
 ) -> None:
 
     active_validators = 0
@@ -48,24 +33,17 @@ def get_all_validator_info(
     prometheus_data = get(prometheus).json()["data"]
 
     for i in range(0, num_pages):
-        d = {
-            "jsonrpc": "2.0",
-            "method": "hmy_getAllValidatorInformation",
-            "params": [i],
-            "id": 1,
-        }
-        data = post(harmony_api, json=d).json()["result"]
-
+        result, data = get_all_validators(i, result)
         if not data:
-            print(f"NO MORE DATA.. ENDING ON PAGE {i+1}.")
+            log.info(f"NO MORE DATA.. ENDING ON PAGE {i+1}.")
             break
-
-        result += data
-
+        
         for d in data:
             show = False
             include = False
             is_elected = False
+            display_check = f'Wallet {check_wallet} NOT Found.'
+
 
             v, e = create_named_tuple_from_dict(d)
             if v.address == check_wallet:
@@ -91,7 +69,7 @@ def get_all_validator_info(
 
                     # We only need to register 1 key per shard because it is the binary version not the key that require updating.
                     if shard not in validators[v.name]:
-                        validators[v.name] += [shard]
+                        validators[v.name] += [int(shard)]
                         shards = validators[v.name]
 
                         if (
@@ -102,7 +80,7 @@ def get_all_validator_info(
                             include = False
                             not_updated += 1
                             if show:
-                                display_check = f"\n\tWallet *- {check_wallet} -* Node Updated = NO!\n"
+                                display_check = f"\n\tWallet *- {check_wallet} -* Node Updated = NO!\t\nNode Version(s) = {versions}\n"
                             if is_elected:
                                 elected_not_updated += 1
 
@@ -124,7 +102,7 @@ def get_all_validator_info(
                                 if is_elected:
                                     elected_is_updated += 1
                                 if show:
-                                    display_check = f"\n\tWallet *- {check_wallet} -* Node Updated = YES!\n"
+                                    display_check = f"\n\tWallet *- {check_wallet} -* Node Updated = YES!\n\tNode Version(s) = {versions}\n"
 
                 if w:
                     hPoolId = find_smartstakeid(v.address, smartstake_validator_list)
@@ -141,6 +119,7 @@ def get_all_validator_info(
                         csv_data.append(w)
 
     save_csv(
+        latest_version,
         fn,
         csv_data,
         [
@@ -169,7 +148,7 @@ def get_all_validator_info(
         display_check,
     )
     save_and_display(
-        f"{latest_node_version.split('-')[1]}-",
+        latest_version,
         result,
         grouped_data,
         display_stats,
@@ -179,4 +158,6 @@ def get_all_validator_info(
 
 
 if __name__ == "__main__":
-    get_all_validator_info(node_version_fn, num_pages=10, save_json_data=True)
+    latest_version = latest_node_version.split('-')[1]
+    create_folders_change_handler(latest_version)
+    validator_node_version(node_version_fn, latest_version, num_pages=10, save_json_data=True)
