@@ -112,7 +112,6 @@ def call_api(url: str) -> tuple:
     # print(d)
     return [x for x in d], d
 
-
 def sort_group(contact: str) -> tuple:
     rtn = []
     app = "unknown"
@@ -131,7 +130,29 @@ def sort_group(contact: str) -> tuple:
     # print(rtn)
     return rtn, app
 
+def parse_contact_info(v: namedtuple) -> tuple:
+    grouped, app = sort_group(v.security_contact)
+    if app == "unknown":
+        # some validators put twitter in the website column
+        # if unknown, we can try the website column,
+        # if website == unknown, we will take the unknown from the original v.security_contact..
+        grouped, app = sort_group(v.website)
+        if app == "unknown":
+            grouped = [v.security_contact]
+    return grouped, app
+
 
 def open_json(fn: str) -> dict:
     with open(f"{fn}.json") as j:
         return load(j)
+
+def save_and_display(fn: str, result: dict, grouped_data: dict, display_stats: tuple, display: object, save_json_data: bool = True) -> None:
+
+    for k, v in grouped_data.items():
+        save_copypasta(fn + k, v, **sep_map[k])
+
+    if save_json_data:
+        with open(all_validators_fn, "w") as j:
+            dump(result, j, indent=4)
+
+    display(*display_stats)

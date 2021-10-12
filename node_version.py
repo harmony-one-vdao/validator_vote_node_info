@@ -12,6 +12,7 @@
 # = 46.41 + 49 = 95.41% (Total)
 #
 
+from os import name
 from core.blskeys import *
 
 latest_node_version = "v7174-v4.3.0-0-g15f9b2d1"
@@ -129,17 +130,8 @@ def get_all_validator_info(
 
                 if w:
                     hPoolId = find_smartstakeid(v.address, smartstake_validator_list)
-                    grouped, app = sort_group(v.security_contact)
-                    if app == "unknown":
-                        # some validators put twitter in the website column
-                        # if unknown, we can try the website column,
-                        # if website == unknown, we will take the unknown from the original v.security_contact..
-                        grouped, app = sort_group(v.website)
-                        if app == "unknown":
-                            grouped = [v.security_contact]
-
+                    grouped, app = parse_contact_info(v)    
                     grouped_data[app] += grouped
-
                     w += [
                         shards,
                         app,
@@ -161,23 +153,16 @@ def get_all_validator_info(
             "Epos Status",
             "Active Status",
             # "blskey",
-            "version",
-            "shards",
-            "group",
+            "Version",
+            "Shards",
+            "Group",
             "Smartstake Summary",
             "Smartstake BlsKeys",
         ],
     )
 
-    for k, v in grouped_data.items():
-        save_copypasta(f"{latest_node_version.split('-')[1]}-{k}", v, **sep_map[k])
-
-    if save_json_data:
-        with open(all_validators_fn, "w") as j:
-            dump(result, j, indent=4)
-
-    display_blskey_stats(active_validators, is_updated, not_updated, elected, elected_is_updated, elected_not_updated, display_check)
-
+    display_stats = active_validators, is_updated, not_updated, elected, elected_is_updated, elected_not_updated, display_check
+    save_and_display(f"{latest_node_version.split('-')[1]}-", result, grouped_data, display_stats, display_blskey_stats, save_json_data=save_json_data)
 
 if __name__ == "__main__":
     get_all_validator_info(node_version_fn, num_pages=10, save_json_data=True)

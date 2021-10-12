@@ -24,7 +24,7 @@ vote_full_address = vote_api.format(vote_address)
 smartstake_validator_list_fn = os.path.join("examples", "validator_list")
 smartstake_address_summary = "https://harmony.smartstake.io/val/{}"
 smartstake_address_blskeys = "https://harmony.smartstake.io/keys/{}"
-smartstake_token = "1633942173"
+smartstake_token = "1634037654"
 res, smartstake_validator_list = smartstake_base(smartstake_token)
 
 binance_wallet = "one1tvhgyvt94gkf7sqgude5tu6709kt9vg66pzwfv"

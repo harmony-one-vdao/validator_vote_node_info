@@ -5,7 +5,7 @@ from core.smartstake_connect import find_smartstakeid
 check_wallet = 'one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a'
 
 def get_validator_voting_info(
-    fn: str, num_pages: int = 10, check_vote: bool = True, save_json_data: bool = False
+    fn: str, num_pages: int = 10, save_json_data: bool = False
 ) -> None:
     voted, voted_results = call_api(vote_full_address)
     voted_yes_weight = 0
@@ -59,21 +59,13 @@ def get_validator_voting_info(
                 if d["delegator-address"] == binance_wallet:
                     binance_controlled_stake += d["amount"]
 
-            if check_vote:
-                if eth_add not in voted:
-                    include = True
 
             if e.active_status == "active":
                 w = [v.name, v.address, v.security_contact, v.website, e.epos_status, e.active_status]
-                grouped, app = sort_group(v.security_contact)
-                if app == "unknown":
-                    # some validators put twitter in the website column
-                    # if unknown, we can try the website column,
-                    # if website == unknown, we will take the unknown from the original v.security_contact..
-                    grouped, app = sort_group(v.website)
-                    if app == "unknown":
-                        grouped = [v.security_contact]
-                if include:
+                grouped, app = parse_contact_info(v) 
+
+                if eth_add not in voted:
+                    include = True
                     grouped_data[app] += grouped
                     w.append(app)
 
@@ -89,7 +81,7 @@ def get_validator_voting_info(
                         if show:
                             display_check = f'\n\tWallet *- {check_wallet} -* Voted NO!'
 
-                if w[0] not in [x[0] for x in csv_data] and check_vote and include:
+                if w[0] not in [x[0] for x in csv_data] and include:
                     hPoolId = find_smartstakeid(v.address, smartstake_validator_list)
                     w += [
                         smartstake_address_summary.format(hPoolId),
@@ -113,19 +105,13 @@ def get_validator_voting_info(
         ],
     )
 
-    for k, v in grouped_data.items():
-        save_copypasta(f"{vote_name}-{k}", v, **sep_map[k])
-
-    if save_json_data:
-        with open(all_validators_fn, "w") as j:
-            dump(result, j, indent=4)
-
-    display_vote_stats(voted_no_weight, voted_yes_weight, binance_kucoin, binance_controlled_stake, display_check)
+    display_stats = voted_no_weight, voted_yes_weight, binance_kucoin, binance_controlled_stake, display_check
+    save_and_display(f"{vote_name}-", result, grouped_data, display_stats, display_vote_stats, save_json_data=save_json_data)
 
 
 if __name__ == "__main__":
     get_validator_voting_info(
-        vote_fn, num_pages=10, check_vote=True, save_json_data=True
+        vote_fn, num_pages=10, save_json_data=True
     )
 
     # l = call_api()
