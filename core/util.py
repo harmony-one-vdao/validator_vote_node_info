@@ -8,6 +8,7 @@ import logging
 
 from includes.config import *
 
+
 def get_all_validators(i: int, result: list) -> dict:
     d = {
         "jsonrpc": "2.0",
@@ -18,6 +19,7 @@ def get_all_validators(i: int, result: list) -> dict:
     data = post(harmony_api, json=d).json()["result"]
     result += data
     return result, data
+
 
 def create_named_tuple_from_dict(d: dict) -> tuple:
     v = namedtuple("Validator", [d.replace("-", "_") for d in d["validator"].keys()])(
@@ -30,6 +32,7 @@ def create_named_tuple_from_dict(d: dict) -> tuple:
 def percentage(x: float, y: float, factor: float = 100, dp: int = 2) -> float:
     return round(((x / y) * factor), dp)
 
+
 def display_vote_stats(
     voted_no_weight: int,
     voted_yes_weight: int,
@@ -37,13 +40,13 @@ def display_vote_stats(
     binance_controlled_stake: int,
     display_check: str,
     vote_full_address: str,
-    proposal: str
+    proposal: str,
 ) -> None:
 
     places = 1000000000000000000
     _, total_stake = call_api(network_info_lite)
     total_stake = round((float(total_stake["liveEpochTotalStake"]) / places))
-    quorum_percentage = percentage (total_stake, 100, factor=vote_quorum)
+    quorum_percentage = percentage(total_stake, 100, factor=vote_quorum)
 
     binance_kucoin = binance_kucoin // places
     binance_controlled_stake = binance_controlled_stake // places
@@ -59,9 +62,9 @@ def display_vote_stats(
     perc_diff = vote_quorum - (yes_perc + no_perc)
     minus_bk_perc = round(100 - no_perc - yes_perc - binance_kucoin_perc, 2)
 
-    number_left_to_pass = percentage (total_stake, 100, factor=perc_diff) 
-    
-    log.info(f'\nVote Proposal: {proposal}')
+    number_left_to_pass = percentage(total_stake, 100, factor=perc_diff)
+
+    log.info(f"\nVote Proposal: {proposal}")
     log.info(f"\n\tTotal Stake         ::  {total_stake:,}\n")
     log.info(f"\tYes Vote Weight     ::  {yes:,}")
     log.info(f"\tNo Vote Weight      ::  {no:,}\n")
@@ -76,7 +79,8 @@ def display_vote_stats(
     log.info(f"\tBinance Control     ::  {binance_controlled_stake:,}")
     log.info(f"\tBinance Control %   ::  {binance_control_perc} %\n")
     log.info(display_check)
-    log.info(f'\tSnapshot: {vote_full_address}\n')
+    log.info(f"\tSnapshot: {vote_full_address}\n")
+
 
 def display_blskey_stats(
     active_validators: int,
@@ -86,7 +90,7 @@ def display_blskey_stats(
     elected_is_updated: int,
     elected_not_updated: int,
     display_check: str,
-    version: str
+    version: str,
 ) -> None:
     # internal keys = 49%
     # external keys =51%
@@ -94,7 +98,7 @@ def display_blskey_stats(
     #
     # Example from Hardfork 4.3.0
     # 91% of Elected External Nodes Updated
-    #TODO: calculate by number of BLSKEYS not validtors for more accurate results.
+    # TODO: calculate by number of BLSKEYS not validtors for more accurate results.
     # 49% (Internal)
     # +
     # 91% of 51% = 46.41% (External)
@@ -107,7 +111,7 @@ def display_blskey_stats(
     elec_perc_not_updated = percentage(elected_not_updated, elected)
     elec_perc_updated = percentage(elected_is_updated, elected)
 
-    log.info(f'\nNode Version: {version}')
+    log.info(f"\nNode Version: {version}")
     log.info(f"\n\tNumber Active Validators           ::  {active_validators} ")
     log.info(f"\tHas Updated to latest version      ::  {is_updated:,}")
     log.info(f"\tNot Updated to latest version      ::  {not_updated} \n")
@@ -120,11 +124,12 @@ def display_blskey_stats(
     log.info(f"\tHas Updated & Elected %            ::  {elec_perc_updated} % ")
     log.info(f"\tNot Updated & Elected %            ::  {elec_perc_not_updated} % \n")
     log.info(display_check)
-    
 
 
 def save_csv(data_folder: str, fn: str, data: list, header: list) -> None:
-    with open(join("data", data_folder, fn), "w", newline="", encoding="utf-8") as csvfile:
+    with open(
+        join("data", data_folder, fn), "w", newline="", encoding="utf-8"
+    ) as csvfile:
         w = csv.writer(csvfile, delimiter=",")
         if header:
             w.writerow(header)
@@ -135,7 +140,9 @@ def save_csv(data_folder: str, fn: str, data: list, header: list) -> None:
                 log.info(x)
 
 
-def save_copypasta(data_folder: str, fn: str, data: list, start: str = "", end: str = "") -> None:
+def save_copypasta(
+    data_folder: str, fn: str, data: list, start: str = "", end: str = ""
+) -> None:
     data = list(set(data))
     with open(join("data", data_folder, f"{fn}.txt"), "w", encoding="utf-8") as w:
         for x in data:
@@ -212,4 +219,4 @@ def save_and_display(
         with open(all_validators_fn, "w") as j:
             dump(result, j, indent=4)
 
-    display(*display_stats,fn)
+    display(*display_stats, fn)

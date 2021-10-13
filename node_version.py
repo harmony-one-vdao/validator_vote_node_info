@@ -1,10 +1,11 @@
-from os import name
+import logging
 from core.blskeys import *
 
 latest_node_version = "v7174-v4.3.0-0-g15f9b2d1"
 
 # check a single wallets Node version.
 check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
+
 
 def validator_node_version(
     fn: str, latest_version: str, num_pages: int = 10, save_json_data: bool = False
@@ -37,13 +38,12 @@ def validator_node_version(
         if not data:
             log.info(f"NO MORE DATA.. ENDING ON PAGE {i+1}.")
             break
-        
+
         for d in data:
             show = False
             include = False
             is_elected = False
-            display_check = f'Wallet {check_wallet} NOT Found.'
-
+            display_check = f"Wallet {check_wallet} NOT Found."
 
             v, e = create_named_tuple_from_dict(d)
             if v.address == check_wallet:
@@ -105,15 +105,12 @@ def validator_node_version(
                                     display_check = f"\n\tWallet *- {check_wallet} -* Node Updated = YES!\n\tNode Version(s) = {versions}\n"
 
                 if w:
-                    hPoolId = find_smartstakeid(v.address, smartstake_validator_list)
+                    ss_address, ss_blskeys = find_smartstakeid(
+                        v.address, smartstake_validator_list
+                    )
                     grouped, app = parse_contact_info(v)
                     grouped_data[app] += grouped
-                    w += [
-                        shards,
-                        app,
-                        smartstake_address_summary.format(hPoolId),
-                        smartstake_address_blskeys.format(hPoolId),
-                    ]
+                    w += [shards, app, ss_address, ss_blskeys]
 
                     if w not in csv_data:
                         csv_data.append(w)
@@ -158,6 +155,8 @@ def validator_node_version(
 
 
 if __name__ == "__main__":
-    latest_version = latest_node_version.split('-')[1]
+    latest_version = latest_node_version.split("-")[1]
     create_folders_change_handler(latest_version)
-    validator_node_version(node_version_fn, latest_version, num_pages=10, save_json_data=True)
+    validator_node_version(
+        node_version_fn, latest_version, num_pages=10, save_json_data=True
+    )
