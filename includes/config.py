@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(__file__))
 
 from core.one_to_eth import convert_one_to_hex
 from includes.blacklist import blacklist, updated_but_vers_not_found
-from core.smartstake_connect import find_smartstakeid, smartstake_base
+
 
 external_nodes_weight = 51  # %
 internal_nodes_weight = 49  # %
@@ -25,10 +25,10 @@ network_info_lite = "https://api.stake.hmny.io/networks/harmony/network_info_lit
 vote_api = "https://snapshot.hmny.io/api/dao-mainnet/proposal/{}"
 
 smartstake_validator_list_fn = os.path.join("examples", "validator_list")
+smartstake_base_url = "https://harmony.smartstake.io/"
 smartstake_address_summary = "https://harmony.smartstake.io/val/{}"
 smartstake_address_blskeys = "https://harmony.smartstake.io/keys/{}"
-smartstake_token = "1634037654"
-smartstake_res, smartstake_validator_list = smartstake_base(smartstake_token)
+
 
 binance_wallet = "one1tvhgyvt94gkf7sqgude5tu6709kt9vg66pzwfv"
 

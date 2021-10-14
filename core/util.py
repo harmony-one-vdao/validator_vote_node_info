@@ -1,5 +1,5 @@
 from requests import post, Session, get
-from json import dump, load
+import json
 import csv
 import re
 from os.path import join
@@ -7,6 +7,9 @@ from collections import namedtuple
 import logging
 
 from includes.config import *
+from core.smartstake_connect import find_smartstakeid, smartstake_base
+
+smartstake_res, smartstake_validator_list = smartstake_base()
 
 
 def get_all_validators(i: int, result: list) -> dict:
@@ -162,7 +165,10 @@ def call_api(url: str) -> tuple:
     log.info(response)
     d = response.text
     if response.status_code == 200:
-        d = response.json()
+        try:
+            d = response.json()
+        except json.decoder.JSONDecodeError:
+            d = response.text
     # log.info(d)
     return [x for x in d], d
 
@@ -200,7 +206,7 @@ def parse_contact_info(v: namedtuple) -> tuple:
 
 def open_json(fn: str) -> dict:
     with open(f"{fn}.json") as j:
-        return load(j)
+        return json.load(j)
 
 
 def save_and_display(
@@ -217,6 +223,6 @@ def save_and_display(
 
     if save_json_data:
         with open(all_validators_fn, "w") as j:
-            dump(result, j, indent=4)
+            json.dump(result, j, indent=4)
 
     display(*display_stats, fn)
