@@ -21,7 +21,7 @@ def smartstake_base(
     if ss_status != 200:
         if token:
             return False, f"Unable to connect <{ss_status}>  "
-        log.info('Error with token, trying minus 1 second token')
+        log.info("Error with token, trying minus 1 second token")
         return smartstake_base(token=token_minus_1)
 
     ss_data = ss_get.json()
@@ -51,7 +51,7 @@ def create_smartstake_token() -> str:
     # Create unix timestamp
     ts = int(time())
     # return ts and ts-1 as unix ts are each second and we might miss the 1st one.
-    return str(ts), str(ts-1)
+    return str(ts), str(ts - 1)
 
 
 if __name__ == "__main__":

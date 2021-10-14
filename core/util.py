@@ -8,7 +8,9 @@ import logging
 
 from includes.config import *
 from core.smartstake_connect import find_smartstakeid, smartstake_base
+
 smartstake_res, smartstake_validator_list = smartstake_base()
+
 
 def get_all_validators(i: int, result: list) -> dict:
     d = {
@@ -165,7 +167,7 @@ def call_api(url: str) -> tuple:
     if response.status_code == 200:
         try:
             d = response.json()
-        except json.decoder.JSONDecodeError: 
+        except json.decoder.JSONDecodeError:
             d = response.text
     # log.info(d)
     return [x for x in d], d
