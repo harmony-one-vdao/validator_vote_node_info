@@ -42,13 +42,13 @@ def bls_key_version(blskey: str, prometheus_data: list) -> tuple:
     versions = []
     blskeys = "hmy_consensus_blskeys"
     node_meta_data = "hmy_node_metadata"
+    # the last hex digit % 4 is the shard number
+    shard_from_bls = int(blskey[-1], 16) % 4
     try:
         for x in prometheus_data:
             for m in x[blskeys]["metrics"]:
                 if m["labels"]["pubkey"] == blskey:
                     instance = m["labels"]["instance"]
-                    shard = m["labels"]["job"].split("/v")[-1]
-
         for x in prometheus_data:
             for m in x[node_meta_data]["metrics"]:
                 if (
@@ -62,7 +62,7 @@ def bls_key_version(blskey: str, prometheus_data: list) -> tuple:
     except UnboundLocalError:
         return False, f"No Key Data Found for {blskey}", "Version Not Found", -1
 
-    return True, "Key Version Found", versions, shard
+    return True, "Key Version Found", versions, shard_from_bls
 
 
 if __name__ == "__main__":
