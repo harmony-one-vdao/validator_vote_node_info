@@ -129,7 +129,7 @@ def get_validator_voting_info(
 
 if __name__ == "__main__":
     votes_to_check = {
-        "HIP-9": "QmTy415weDCQd88QBaBYBSW6Ux75JiraMuyjwtSMEaEJBQ",
+        # "HIP-9": "QmTy415weDCQd88QBaBYBSW6Ux75JiraMuyjwtSMEaEJBQ",
         #  "DAO Elections": 'Qmar414bkQvbjkroAZkhV86Z7iAk28jGMVjcaH7uEe63CE',
         "HIP15": "QmRteYUE2RAXciDJHGefKCNEpwpV6tXwYzhkoXCwtfULD6",
     }
