@@ -20,10 +20,10 @@ def get_all_validators(i: int, result: list) -> dict:
         "id": 1,
     }
     try:
-        data = post(harmony_api, json=d)
-        data = data.json()["result"]
+        r = post(harmony_api, json=d)
+        data = r.json()["result"]
     except KeyError:
-        print(data)
+        log.info(r)
     result += data
     return result, data
 
