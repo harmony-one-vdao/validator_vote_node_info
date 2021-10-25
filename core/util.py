@@ -19,7 +19,11 @@ def get_all_validators(i: int, result: list) -> dict:
         "params": [i],
         "id": 1,
     }
-    data = post(harmony_api, json=d).json()["result"]
+    try:
+        data = post(harmony_api, json=d)
+        data = data.json()["result"]
+    except KeyError:
+        print(data)
     result += data
     return result, data
 
@@ -46,7 +50,6 @@ def display_vote_stats(
     proposal: str,
 ) -> None:
 
-    places = 1000000000000000000
     _, total_stake = call_api(network_info_lite)
     total_stake = round((float(total_stake["liveEpochTotalStake"]) / places))
     quorum_percentage = percentage(total_stake, 100, factor=vote_quorum)
