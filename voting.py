@@ -59,6 +59,7 @@ def get_validator_voting_info(
                 w = [
                     v.name,
                     v.address,
+                    f"{round(float(e.total_delegation) / places):,}",                    
                     v.security_contact,
                     v.website,
                     e.epos_status,
@@ -99,6 +100,7 @@ def get_validator_voting_info(
         [
             "Name",
             "Address",
+            'Staked',
             "Security Contact",
             "Website",
             "Epos Status",
