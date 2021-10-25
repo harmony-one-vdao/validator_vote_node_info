@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(__file__))
 from core.one_to_eth import convert_one_to_hex
 from includes.blacklist import blacklist, updated_but_vers_not_found
 
+places = 1000000000000000000
 
 external_nodes_weight = 51  # %
 internal_nodes_weight = 49  # %
@@ -19,7 +20,9 @@ vote_fn = "validator_vote.csv"
 node_version_fn = "validator_node_versions.csv"
 prometheus = "https://gateway.harmony.one/api/v1/metrics"
 
-harmony_api = "https://api.harmony.one"
+# harmony_api = "https://api.harmony.one"
+harmony_api = "https://g.s0.t.hmny.io"
+
 network_info_lite = "https://api.stake.hmny.io/networks/harmony/network_info_lite"
 
 vote_api = "https://snapshot.hmny.io/api/dao-mainnet/proposal/{}"
