@@ -30,7 +30,6 @@ def smartstake_base(
     return True, ss_data
 
 
-
 def create_smartstake_token() -> str:
     # Call APi with normal Http to generate a token
     get(smartstake_base_url)
@@ -42,6 +41,6 @@ def create_smartstake_token() -> str:
 
 if __name__ == "__main__":
     res, msg = smartstake_base()
-    with open('smartstake.json', "w") as j:
+    with open("smartstake.json", "w") as j:
         dump(msg, j, indent=4)
     print(f"{res}  {msg}")
