@@ -5,10 +5,11 @@ prometheus = "https://gateway.harmony.one/api/v1/metrics"
 
 prometheus_data = get(prometheus).json()["data"]
 
-with open('prometheus_json.json', "w") as j:
+with open("prometheus_json.json", "w") as j:
     dump(prometheus_data, j, indent=4)
 
 blskey = "03561c6e33eabc526246f3eb0c7c2d9cc3ca229458bb4034770796a530c3e5487a11b601d46910569dfaf0d2bb4ae28b"
+
 
 def bls_key_version(blskey: str, prometheus_data: list) -> tuple:
     # hmy_consensus_bingo
@@ -46,6 +47,7 @@ def bls_key_version(blskey: str, prometheus_data: list) -> tuple:
         return False, f"No Key Data Found for {blskey}", "Version Not Found", -1
 
     return True, "Key Version Found", versions, shard
+
 
 res, msg, versions, shard = bls_key_version(blskey, prometheus_data)
 

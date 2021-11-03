@@ -59,7 +59,7 @@ def get_validator_voting_info(
                 w = [
                     v.name,
                     v.address,
-                    f"{round(float(e.total_delegation) / places):,}",                    
+                    f"{round(float(e.total_delegation) / places):,}",
                     v.security_contact,
                     v.website,
                     e.epos_status,
@@ -100,7 +100,7 @@ def get_validator_voting_info(
         [
             "Name",
             "Address",
-            'Staked',
+            "Staked",
             "Security Contact",
             "Website",
             "Epos Status",
@@ -131,9 +131,8 @@ def get_validator_voting_info(
 
 if __name__ == "__main__":
     votes_to_check = {
-        # "HIP-9": "QmTy415weDCQd88QBaBYBSW6Ux75JiraMuyjwtSMEaEJBQ",
-        #  "DAO Elections": 'Qmar414bkQvbjkroAZkhV86Z7iAk28jGMVjcaH7uEe63CE',
-        "HIP15": "QmRteYUE2RAXciDJHGefKCNEpwpV6tXwYzhkoXCwtfULD6",
+        "HIP14": "QmXemgh9rm578TBbUTFXRh9KkxkvVJmEDCTgRfN7ymgAtN",
+        "HIP15": "QmewxBWGsDNAMTC4q6DAzPwUkSLDpjDAqBc6JuTTZiA2D4",
     }
 
     for vote_name, vote_address in votes_to_check.items():
