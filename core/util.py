@@ -8,8 +8,12 @@ import logging
 
 from includes.config import *
 from core.smartstake_connect import find_smartstakeid, smartstake_base
+from core.google_api_connect import *
 
 smartstake_res, smartstake_validator_list = smartstake_base()
+google_contacts = download_file_from_google_drive(
+    google_file_id, google_gid, google_csv_filename, save_csv=True
+)
 
 
 def get_all_validators(i: int, result: list) -> dict:
@@ -136,14 +140,10 @@ def save_csv(data_folder: str, fn: str, data: list, header: list) -> None:
     with open(
         join("data", data_folder, fn), "w", newline="", encoding="utf-8"
     ) as csvfile:
-        w = csv.writer(csvfile, delimiter=",")
-        if header:
-            w.writerow(header)
+        w = csv.DictWriter(csvfile, fieldnames=header, delimiter=",")
+        w.writeheader()
         for x in data:
-            try:
-                w.writerow(x)
-            except UnicodeDecodeError:
-                log.info(x)
+            w.writerow(x)
 
 
 def save_copypasta(
