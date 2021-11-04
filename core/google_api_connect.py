@@ -3,9 +3,11 @@ from csv import DictReader
 import io
 
 
-def download_file_from_google_drive(id: str, gid: int, *args, **kw: dict) -> None:
+def download_file_from_google_drive(
+    id: str, google_gid: int, *args, **kw: dict
+) -> None:
 
-    URL = f"https://docs.google.com/spreadsheets/d/{id}/export?format=csv&id={id}&gid={gid}"
+    URL = f"https://docs.google.com/spreadsheets/d/{id}/export?format=csv&id={id}&google_gid={google_gid}"
 
     session = Session()
 
@@ -39,7 +41,9 @@ def save_response_content(response: Session, *args, **kw):
     return create_dict_from_csv(chunks, *args, **kw)
 
 
-def create_dict_from_csv(data: bytes, destination: str, save_csv: bool = False) -> dict:
+def create_dict_from_csv(
+    data: bytes, google_csv_filename: str, save_csv: bool = False
+) -> dict:
     rtn_list = []
 
     csv_decoded = io.StringIO(data.decode("utf-8"))
@@ -48,18 +52,26 @@ def create_dict_from_csv(data: bytes, destination: str, save_csv: bool = False) 
         rtn_list.append(row)
 
     if save_csv:
-        with open(destination, "wb") as f:
+        with open(google_csv_filename, "wb") as f:
             f.write(data)
 
     return rtn_list
 
 
 if __name__ == "__main__":
-    file_id = r"1i6pG4odOvS-CP-83WpzE4Yzaqw_fF1Dlav1lPWOzvow"
-    gid = "864212071"
-    destination = "validator_contacts.csv"
-    csv_dicts = download_file_from_google_drive(
-        file_id, gid, destination, save_csv=True
+    google_file_id = r"1i6pG4odOvS-CP-83WpzE4Yzaqw_fF1Dlav1lPWOzvow"
+    google_gid = "864212071"
+    google_csv_filename = "validator_contacts.csv"
+    google_contacts = download_file_from_google_drive(
+        google_file_id, google_gid, google_csv_filename, save_csv=True
     )
 
-    print(csv_dicts)
+    address = "one1xhwspfzgv3vh5fp9hxwngv8tvdj2qr338lmavw"
+    contacts_list_from_google = ("Twitter", "Reddit", "Telegram", "Facebook", "Discord")
+
+    for x in google_contacts:
+        if x["address"] == address:
+            d = {con: x[con] for con in contacts_list_from_google}
+    print(d)
+
+# {'Nr': '91', '# name': '君に舞い降りるピッツァ', 'Status': 'Active', 'Twitter': '', 'Reddit': '', 'Telegram': '', 'Medium': '', 'Youtube': '', 'Facebook': '', 'Discord': '', 'GitHub': '', 'website': 'https://www.1101.com/juku/hiroba/1st/free-101/03.html', 'Token': '', 'address': 'one1kq0xzzzlrpkzslwfesrgmp5e7umuxl3m3dgk27', 'Active since Block': '3366908', 'securitycontact': 'CONTACT'}

@@ -120,6 +120,12 @@ def validator_node_version(
                     )
 
                     if w not in csv_data:
+                        for x in google_contacts:
+                            if x["address"] == v.address:
+                                w.update(
+                                    {con: x[con] for con in contacts_list_from_google}
+                                )
+
                         csv_data.append(w)
 
     save_csv(

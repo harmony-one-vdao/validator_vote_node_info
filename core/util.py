@@ -8,8 +8,12 @@ import logging
 
 from includes.config import *
 from core.smartstake_connect import find_smartstakeid, smartstake_base
+from core.google_api_connect import *
 
 smartstake_res, smartstake_validator_list = smartstake_base()
+google_contacts = download_file_from_google_drive(
+    google_file_id, google_gid, google_csv_filename, save_csv=True
+)
 
 
 def get_all_validators(i: int, result: list) -> dict:

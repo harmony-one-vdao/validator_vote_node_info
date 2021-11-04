@@ -56,6 +56,11 @@ sep_map = {
 # {'not eligible to be elected next epoch', 'eligible to be elected next epoch', 'currently elected'}
 not_eligible_message = "not eligible to be elected next epoch"
 
+google_file_id = r"1i6pG4odOvS-CP-83WpzE4Yzaqw_fF1Dlav1lPWOzvow"
+google_gid = "864212071"
+google_csv_filename = "validator_contacts.csv"
+contacts_list_from_google = ("Twitter", "Reddit", "Telegram", "Facebook", "Discord")
+
 
 def create_data_path(pth: str, data_path: str = "data") -> os.path:
     cwd = os.getcwd()
