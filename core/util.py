@@ -136,14 +136,10 @@ def save_csv(data_folder: str, fn: str, data: list, header: list) -> None:
     with open(
         join("data", data_folder, fn), "w", newline="", encoding="utf-8"
     ) as csvfile:
-        w = csv.writer(csvfile, delimiter=",")
-        if header:
-            w.writerow(header)
+        w = csv.DictWriter(csvfile, fieldnames=header, delimiter=",")
+        w.writeheader()
         for x in data:
-            try:
-                w.writerow(x)
-            except UnicodeDecodeError:
-                log.info(x)
+            w.writerow(x)
 
 
 def save_copypasta(

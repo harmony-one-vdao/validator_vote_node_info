@@ -56,21 +56,22 @@ def get_validator_voting_info(
                     binance_controlled_stake += d["amount"]
 
             if e.active_status == "active":
-                w = [
-                    v.name,
-                    v.address,
-                    f"{round(float(e.total_delegation) / places):,}",
-                    v.security_contact,
-                    v.website,
-                    e.epos_status,
-                    e.active_status,
-                ]
+                w = {
+                    "Name": v.name,
+                    "Address": v.address,
+                    "Staked": f"{round(float(e.total_delegation) / places):,}",
+                    "Security Contact": v.security_contact,
+                    "Website": v.website,
+                    "Epos Status": e.epos_status,
+                    "Active Status": e.active_status,
+                }
+
                 grouped, app = parse_contact_info(v)
 
                 if eth_add not in voted:
                     include = True
                     grouped_data[app] += grouped
-                    w.append(app)
+                    w.update({"Group": app})
 
                 # Already Voted, Check Weight
                 else:
@@ -86,29 +87,20 @@ def get_validator_voting_info(
                         if show:
                             display_check = f"\n\tWallet *- {check_wallet} -* Voted NO!"
 
-                if w[0] not in [x[0] for x in csv_data] and include:
+                if w['Name'] not in [x['Name'] for x in csv_data] and include:
                     ss_address, ss_blskeys = find_smartstakeid(
                         v.address, smartstake_validator_list
                     )
-                    w += [ss_address, ss_blskeys]
+                    w.update(
+                        {
+                            "Smartstake Summary": ss_address,
+                            "Smartstake BlsKeys": ss_blskeys,
+                        }
+                    )
                     csv_data.append(w)
 
     save_csv(
-        vote_name,
-        f"{vote_name}-{fn}",
-        csv_data,
-        [
-            "Name",
-            "Address",
-            "Staked",
-            "Security Contact",
-            "Website",
-            "Epos Status",
-            "Active Status",
-            "Group",
-            "Smartstake Summary",
-            "Smartstake BlsKeys",
-        ],
+        vote_name, f"{vote_name}-{fn}", csv_data, [x for x in csv_data[0].keys()],
     )
 
     display_stats = (

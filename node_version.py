@@ -49,8 +49,8 @@ def validator_node_version(
             if v.address == check_wallet:
                 show = True
 
-            validators = {x[0]: [] for x in csv_data}
-            if not validators.get("name"):
+            validators = {x["Name"]: [] for x in csv_data}
+            if not validators.get("Name"):
                 validators.update({v.name: []})
                 include = True
 
@@ -84,16 +84,16 @@ def validator_node_version(
                             if is_elected:
                                 elected_not_updated += 1
 
-                            w = [
-                                v.name,
-                                v.address,
-                                v.security_contact,
-                                v.website,
-                                e.epos_status,
-                                e.active_status,
-                                # blskey,
-                                versions,
-                            ]
+                            w = {
+                                "Name": v.name,
+                                "Address": v.address,
+                                "Security Contact": v.security_contact,
+                                "Website": v.website,
+                                "Epos Status": e.epos_status,
+                                "Active Status": e.active_status,
+                                # "blskey",
+                                "Version": versions,
+                            }
 
                         else:
                             if include:
@@ -110,29 +110,20 @@ def validator_node_version(
                     )
                     grouped, app = parse_contact_info(v)
                     grouped_data[app] += grouped
-                    w += [shards, app, ss_address, ss_blskeys]
+                    w.update(
+                        {
+                            "Shards": shards,
+                            "Group": app,
+                            "Smartstake Summary": ss_address,
+                            "Smartstake BlsKeys": ss_blskeys,
+                        }
+                    )
 
                     if w not in csv_data:
                         csv_data.append(w)
 
     save_csv(
-        latest_version,
-        fn,
-        csv_data,
-        [
-            "Name",
-            "Address",
-            "Security Contact",
-            "Website",
-            "Epos Status",
-            "Active Status",
-            # "blskey",
-            "Version",
-            "Shards",
-            "Group",
-            "Smartstake Summary",
-            "Smartstake BlsKeys",
-        ],
+        latest_version, fn, csv_data, [x for x in csv_data[0].keys()],
     )
 
     display_stats = (
