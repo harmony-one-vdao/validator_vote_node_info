@@ -1,4 +1,4 @@
-from core.util import *
+from core.common import *
 
 
 def bls_key_version(blskey: str, epoch: int, token: str) -> tuple:

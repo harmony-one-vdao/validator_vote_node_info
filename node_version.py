@@ -8,7 +8,11 @@ check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
 
 
 def validator_node_version(
-    fn: str, latest_version: str, num_pages: int = 10, save_json_data: bool = False
+    fn: str,
+    latest_version: str,
+    grouped_data: dict,
+    num_pages: int = 10,
+    save_json_data: bool = False,
 ) -> None:
 
     active_validators = 0
@@ -21,15 +25,6 @@ def validator_node_version(
 
     csv_data = []
     result = []
-
-    grouped_data = {
-        "email": [],
-        "twitter": [],
-        "website": [],
-        "telegram": [],
-        "at_only": [],
-        "unknown": [],
-    }
 
     prometheus_data = get(prometheus).json()["data"]
 
@@ -120,11 +115,12 @@ def validator_node_version(
                     )
 
                     if w not in csv_data:
-                        for x in google_contacts:
-                            if x["address"] == v.address:
-                                w.update(
-                                    {con: x[con] for con in contacts_list_from_google}
-                                )
+                        (
+                            grouped_data,
+                            social_media_contacts,
+                        ) = parse_google_docs_contact_info(v, grouped_data)
+
+                        w.update(social_media_contacts)
 
                         csv_data.append(w)
 
@@ -155,5 +151,5 @@ if __name__ == "__main__":
     latest_version = latest_node_version.split("-")[1]
     create_folders_change_handler(latest_version)
     validator_node_version(
-        node_version_fn, latest_version, num_pages=10, save_json_data=True
+        node_version_fn, latest_version, grouped_data, num_pages=10, save_json_data=True
     )

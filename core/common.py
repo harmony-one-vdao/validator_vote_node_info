@@ -45,6 +45,7 @@ def percentage(x: float, y: float, factor: float = 100, dp: int = 2) -> float:
 
 
 def display_vote_stats(
+    voted_abstain_weight: int,
     voted_no_weight: int,
     voted_yes_weight: int,
     binance_kucoin: int,
@@ -62,8 +63,10 @@ def display_vote_stats(
     binance_controlled_stake = binance_controlled_stake // places
     no = voted_no_weight // places
     yes = voted_yes_weight // places
+    abstain = voted_abstain_weight // places
     no_perc = percentage(no, total_stake)
     yes_perc = percentage(yes, total_stake)
+    abstain_perc = percentage(abstain, total_stake)
     binance_kucoin_perc = percentage(binance_kucoin, total_stake)
     binance_control_perc = percentage(binance_controlled_stake, total_stake)
 
@@ -77,9 +80,12 @@ def display_vote_stats(
     log.info(f"\nVote Proposal: {proposal}")
     log.info(f"\n\tTotal Stake         ::  {total_stake:,}\n")
     log.info(f"\tYes Vote Weight     ::  {yes:,}")
-    log.info(f"\tNo Vote Weight      ::  {no:,}\n")
-    log.info(f"\tVoting Stake % YES  ::  {yes_perc} %")
-    log.info(f"\tVoting Stake % NO   ::  {no_perc} %\n")
+    log.info(f"\tNo Vote Weight      ::  {no:,}")
+    log.info(f"\tAbstain Vote Weight ::  {abstain:,}\n")
+
+    log.info(f"\tVoting  % YES       ::  {yes_perc} %")
+    log.info(f"\tVoting  % NO        ::  {no_perc} %")
+    log.info(f"\tVoting  % ABSTAIN   ::  {abstain_perc} %\n")
     log.info(f"\t{vote_quorum} % of total       ::  {quorum_percentage:,}")
     log.info(f"\tNeeded to make 51%  ::  {number_left_to_pass:,}\n")
     log.info(f"\tBinance Kucoin      ::  {binance_kucoin:,}")
@@ -177,6 +183,9 @@ def call_api(url: str) -> tuple:
 
 
 def sort_group(contact: str) -> tuple:
+    # Dont parse join tg chats
+    if contact.startswith(("https://t.me/joinchat", "http://t.me/joinchat")):
+        return [contact], "telegram"
     rtn = []
     app = "unknown"
     for k, v in expressions.items():
@@ -205,6 +214,19 @@ def parse_contact_info(v: namedtuple) -> tuple:
         if app == "unknown":
             grouped = [v.security_contact]
     return grouped, app
+
+
+def parse_google_docs_contact_info(v: namedtuple, grouped_data: dict) -> tuple:
+    social_media_contacts = {}
+    for x in google_contacts:
+        if x["address"] == v.address:
+            social_media_contacts = {con: x[con] for con in contacts_list_from_google}
+            for val in social_media_contacts.values():
+                if val:
+                    grouped, app = sort_group(val)
+                    grouped_data[app] += grouped
+
+    return grouped_data, social_media_contacts
 
 
 def open_json(fn: str) -> dict:
