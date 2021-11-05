@@ -25,7 +25,9 @@ harmony_api = "https://g.s0.t.hmny.io"
 
 network_info_lite = "https://api.stake.hmny.io/networks/harmony/network_info_lite"
 
-vote_api = "https://snapshot.hmny.io/api/dao-mainnet/proposal/{}"
+vote_api_dao_mainnet = "https://snapshot.hmny.io/api/dao-mainnet/proposal/{}"
+vote_api_staking_mainnet = "https://snapshot.hmny.io/api/staking-mainnet/proposal/{}"
+
 
 smartstake_validator_list_fn = os.path.join("examples", "validator_list")
 smartstake_base_url = "https://harmony.smartstake.io/"
@@ -38,7 +40,10 @@ binance_wallet = "one1tvhgyvt94gkf7sqgude5tu6709kt9vg66pzwfv"
 expressions = {
     "email": r"[\w\.-]+@[\w\.-]+(?:\.[\w]+)+",
     "twitter": r"^.*?\btwitter\.com/@?(\w{1,30})(?:[?/,].*)?$",
+    "facebook": r"^.*?\bfacebook\.com/@?(\w{1,30})(?:[?/,].*)?$",
     "telegram": r"^.*?\bt\.me/@?(\w{1,30})(?:[?/,].*)?$",
+    "discord": r"(?:https?://)?discord(?:(?:app)?\.com/invite|\.gg)/?[a-zA-Z0-9]+/?",
+    "reddit": r"(?:https?://)?reddit\.com/?\w+/?\w+",
     "website": r"http\S+",
     "at_only": r"^.*@[\S\s]+$",
 }
@@ -49,7 +54,21 @@ sep_map = {
     "website": {"end": "\n"},
     "telegram": {"start": "@", "end": "\n"},
     "at_only": {"end": "\n"},
+    "facebook": {"end": "\n"},
+    "discord": {"end": "\n"},
+    "reddit": {"end": "\n"},
     "unknown": {"end": "\n"},
+}
+grouped_data = {
+    "email": [],
+    "twitter": [],
+    "facebook": [],
+    "discord": [],
+    "website": [],
+    "reddit": [],
+    "telegram": [],
+    "at_only": [],
+    "unknown": [],
 }
 
 # "epos-status"
@@ -58,7 +77,7 @@ not_eligible_message = "not eligible to be elected next epoch"
 
 google_file_id = r"1i6pG4odOvS-CP-83WpzE4Yzaqw_fF1Dlav1lPWOzvow"
 google_gid = "864212071"
-google_csv_filename = "validator_contacts.csv"
+google_csv_filename = os.path.join("data", "validator_contacts.csv")
 contacts_list_from_google = ("Twitter", "Reddit", "Telegram", "Facebook", "Discord")
 
 

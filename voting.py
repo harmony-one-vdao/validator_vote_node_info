@@ -1,4 +1,4 @@
-from core.util import *
+from core.common import *
 from core.smartstake_connect import find_smartstakeid
 
 # check a single wallets vote
@@ -9,25 +9,19 @@ def get_validator_voting_info(
     fn: str,
     vote_address: str,
     vote_name: str,
+    grouped_data: dict,
     num_pages: int = 10,
     save_json_data: bool = False,
 ) -> None:
-    voted, voted_results = call_api(vote_api.format(vote_address))
+    voted, voted_results = call_api(vote_address)
     voted_yes_weight = 0
     voted_no_weight = 0
+    voted_abstain_weight = 0
     binance_kucoin = 0
     binance_controlled_stake = 0
 
     csv_data = []
     result = []
-    grouped_data = {
-        "email": [],
-        "twitter": [],
-        "website": [],
-        "telegram": [],
-        "at_only": [],
-        "unknown": [],
-    }
 
     for i in range(0, num_pages):
         result, data = get_all_validators(i, result)
@@ -82,10 +76,17 @@ def get_validator_voting_info(
                             display_check = (
                                 f"\n\tWallet *- {check_wallet} -* Voted Yes!\n"
                             )
-                    else:
+                    elif int(choice) == 2:
                         voted_no_weight += e.total_delegation
                         if show:
                             display_check = f"\n\tWallet *- {check_wallet} -* Voted NO!"
+
+                    elif int(choice) == 3:
+                        voted_abstain_weight += e.total_delegation
+                        if show:
+                            display_check = (
+                                f"\n\tWallet *- {check_wallet} -* Voted to Abstain!"
+                            )
 
                 if w["Name"] not in [x["Name"] for x in csv_data] and include:
                     ss_address, ss_blskeys = find_smartstakeid(
@@ -97,9 +98,12 @@ def get_validator_voting_info(
                             "Smartstake BlsKeys": ss_blskeys,
                         }
                     )
-                    for x in google_contacts:
-                        if x["address"] == v.address:
-                            w.update({con: x[con] for con in contacts_list_from_google})
+                    (
+                        grouped_data,
+                        social_media_contacts,
+                    ) = parse_google_docs_contact_info(v, grouped_data)
+
+                    w.update(social_media_contacts)
 
                     csv_data.append(w)
 
@@ -108,12 +112,13 @@ def get_validator_voting_info(
     )
 
     display_stats = (
+        voted_abstain_weight,
         voted_no_weight,
         voted_yes_weight,
         binance_kucoin,
         binance_controlled_stake,
         display_check,
-        vote_api.format(vote_address),
+        vote_address,
     )
     save_and_display(
         vote_name,
@@ -127,12 +132,21 @@ def get_validator_voting_info(
 
 if __name__ == "__main__":
     votes_to_check = {
-        "HIP14": "QmXemgh9rm578TBbUTFXRh9KkxkvVJmEDCTgRfN7ymgAtN",
-        "HIP15": "QmewxBWGsDNAMTC4q6DAzPwUkSLDpjDAqBc6JuTTZiA2D4",
+        "HIP14": vote_api_staking_mainnet.format(
+            "QmXemgh9rm578TBbUTFXRh9KkxkvVJmEDCTgRfN7ymgAtN"
+        ),
+        "HIP15": vote_api_staking_mainnet.format(
+            "QmewxBWGsDNAMTC4q6DAzPwUkSLDpjDAqBc6JuTTZiA2D4"
+        ),
     }
 
     for vote_name, vote_address in votes_to_check.items():
         create_folders_change_handler(vote_name)
         get_validator_voting_info(
-            vote_fn, vote_address, vote_name, num_pages=10, save_json_data=True
+            vote_fn,
+            vote_address,
+            vote_name,
+            grouped_data,
+            num_pages=10,
+            save_json_data=True,
         )
