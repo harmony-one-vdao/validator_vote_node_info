@@ -1,0 +1,37 @@
+Hi,
+
+Can you please vote on the following HIP Proposals.  
+It is important for the security and decentralisation of the Harmony Protocol.
+
+Options are:
+
+✅ Yes
+✅ No
+✅ Abstain
+
+----------------------------------------------------------------
+
+🚨 Validator DAO Vote 🚨
+
+HIP-14: Update Staking Portal ER/Uptime Metrics; Add Additional Information
+
+🗓️ Start: Nov 4,  2021
+🗓️ End:   Nov 18, 2021 
+
+✍️Talk: talk.harmony.one/t/hip-14-update-staking-portal-er-uptime-metrics-add-additional-information/1824
+🗳️Vote:  gov.harmony.one/#/staking-mainnet/proposal/QmXemgh9rm578TBbUTFXRh9KkxkvVJmEDCTgRfN7ymgAtN
+
+----------------------------------------------------------------
+
+🚨 Validator DAO Vote 🚨
+
+HIP-15: Validator Governance Participation Indicator
+
+🗓️ Start: Nov 4,  2021
+🗓️ End:   Nov 18, 2021 
+
+✍️Talk: talk.harmony.one/t/hip-15-validator-governance-participation-indicator/1836
+🗳️Vote: gov.harmony.one/#/staking-mainnet/proposal/QmewxBWGsDNAMTC4q6DAzPwUkSLDpjDAqBc6JuTTZiA2D4
+
+
+
