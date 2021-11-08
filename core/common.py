@@ -189,7 +189,7 @@ def sort_group(contact: str) -> tuple:
     rtn = []
     app = "unknown"
     for k, v in expressions.items():
-        lst = re.findall(v, contact.lower())
+        lst = re.findall(v, contact)
         if lst:
             rtn = lst
             app = k

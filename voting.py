@@ -12,6 +12,7 @@ def get_validator_voting_info(
     grouped_data: dict,
     num_pages: int = 10,
     save_json_data: bool = False,
+    check_wallet: bool = False,
 ) -> None:
     voted, voted_results = call_api(vote_address)
     voted_yes_weight = 0
@@ -149,4 +150,5 @@ if __name__ == "__main__":
             grouped_data,
             num_pages=10,
             save_json_data=True,
+            check_wallet=False,
         )
