@@ -108,7 +108,10 @@ def get_validator_voting_info(
                     csv_data.append(w)
 
     save_csv(
-        vote_name, f"{vote_name}-{fn}", csv_data, [x for x in csv_data[0].keys()],
+        vote_name,
+        f"{vote_name}-{fn}",
+        csv_data,
+        [x for x in csv_data[0].keys()],
     )
 
     display_stats = (
