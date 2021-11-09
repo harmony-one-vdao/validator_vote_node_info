@@ -109,12 +109,20 @@ def display_vote_stats(
         "Snapshot": {"Vote Address": vote_full_address},
     }
 
+    csv_save_data = {}
+
     for title, info in d.items():
         log.info(f"\n{title}\n")
+        if isinstance(info, dict):
+            csv_save_data.update(info)
         for name, data in info.items():
             log.info(f"\t{name:<20}  ::  {data:<25}")
 
     log.info(f"\n{display_check}\n")
+
+    save_csv(
+        proposal, f"{proposal}-voting_stats.csv", [csv_save_data], csv_save_data.keys()
+    )
 
 
 def display_blskey_stats(
