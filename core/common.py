@@ -83,29 +83,38 @@ def display_vote_stats(
     number_left_to_pass = percentage(total_stake, 100, factor=perc_diff)
     perc_left_to_pass = round(vote_quorum - total_perc, 2)
 
-    log.info(f"\nVote Proposal: {proposal}")
-    log.info(f"\n\tTotal Stake         ::  {total_stake:,}\n")
-    log.info(f"\tYes Vote Weight     ::  {yes:,}")
-    log.info(f"\tNo Vote Weight      ::  {no:,}")
-    log.info(f"\tAbstain Vote Weight ::  {abstain:,}")
-    log.info(f"\tTotal Vote Weight   ::  {total_weight:,}\n")
+    d = {
+        "Metadata": {"Vote Proposal": proposal, "Total Stake ": f"{total_stake:,}"},
+        "Weights": {
+            "Yes Vote Weight": f"{yes:,}",
+            "No Vote Weight": f"{no:,}",
+            "Abstain Vote Weight": f"{abstain:,}",
+            "Total Vote Weight": f"{total_weight:,}",
+        },
+        "Quorum": {
+            f"{vote_quorum} % of total": f"{quorum_percentage:,}",
+            "weight to make 51%": f"{number_left_to_pass:,}",
+            "% to make 51%": f"{perc_left_to_pass} %",
+        },
+        "Binance & Kucoin": {
+            "Binance & Kucoin": f"{binance_kucoin:,}",
+            "Binance Kucoin %": f"{binance_kucoin_perc} %",
+            "Weight left No B & K": f"{minus_bk:,}",
+            "% left No B&K": f"{minus_bk_perc} %",
+        },
+        "Binance Controlled Stake": {
+            "Binance Control": f"{binance_controlled_stake:,}",
+            "Binance Control %": f"{binance_control_perc} %",
+        },
+        "Snapshot": {"Vote Address": vote_full_address},
+    }
 
-    log.info(f"\tVoting  % YES       ::  {yes_perc} %")
-    log.info(f"\tVoting  % NO        ::  {no_perc} %")
-    log.info(f"\tVoting  % ABSTAIN   ::  {abstain_perc} %")
-    log.info(f"\tVoting  % TOTAL     ::  {total_perc} %\n")
-    log.info(f"\t{vote_quorum} % of total       ::  {quorum_percentage:,}")
-    log.info(f"\tweight to make 51%  ::  {number_left_to_pass:,}")
-    log.info(f"\t% to make 51%       ::  {perc_left_to_pass:,} %\n")
-    log.info(f"\tBinance Kucoin      ::  {binance_kucoin:,}")
-    log.info(f"\tBinance Kucoin %    ::  {binance_kucoin_perc} %")
-    log.info(f"\tWeight left No B&K  ::  {minus_bk:,}")
-    log.info(f"\t% left No B&K       ::  {minus_bk_perc} %\n")
-    log.info(f"\tBinance Control     ::  {binance_controlled_stake:,}")
-    log.info(f"\tBinance Control %   ::  {binance_control_perc} %\n")
+    for title, info in d.items():
+        log.info(f"\n{title}\n")
+        for name, data in info.items():
+            log.info(f"\t{name:<20}  ::  {data:<25}")
 
-    log.info(f"\tSnapshot: {vote_full_address}\n")
-    log.info(display_check)
+    log.info(f"\n{display_check}\n")
 
 
 def display_blskey_stats(
