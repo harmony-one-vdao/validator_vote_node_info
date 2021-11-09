@@ -84,12 +84,18 @@ def display_vote_stats(
     perc_left_to_pass = round(vote_quorum - total_perc, 2)
 
     d = {
-        "Metadata": {"Vote Proposal": proposal, "Total Stake ": f"{total_stake:,}"},
+        proposal.upper(): {"Total Stake ": f"{total_stake:,}"},
         "Weights": {
             "Yes Vote Weight": f"{yes:,}",
             "No Vote Weight": f"{no:,}",
             "Abstain Vote Weight": f"{abstain:,}",
             "Total Vote Weight": f"{total_weight:,}",
+        },
+        "Percentages": {
+            "Yes Vote %": f"{yes_perc:,} %",
+            "No Vote %": f"{no_perc:,} %",
+            "Abstain Vote %": f"{abstain_perc:,} %",
+            "Total Vote %": f"{total_perc:,}",
         },
         "Quorum": {
             f"{vote_quorum} % of total": f"{quorum_percentage:,}",
