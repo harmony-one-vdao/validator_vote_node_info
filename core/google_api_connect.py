@@ -67,8 +67,8 @@ def create_dict_from_csv(
 
 
 if __name__ == "__main__":
-    google_file_id = r"1i6pG4odOvS-CP-83WpzE4Yzaqw_fF1Dlav1lPWOzvow"
-    google_gid = "864212071"
+    google_file_id = r"13Lu3VVf7erkmGnOUe-I_Q-hONGGuFoKQ"
+    google_gid = "2130181801"
     google_csv_filename = "validator_contacts.csv"
     google_contacts = download_file_from_google_drive(
         google_file_id, google_gid, google_csv_filename, save_csv=True
@@ -78,6 +78,7 @@ if __name__ == "__main__":
     contacts_list_from_google = ("Twitter", "Reddit", "Telegram", "Facebook", "Discord")
 
     for x in google_contacts:
+        print(x)
         if x["address"] == address:
             d = {con: x[con] for con in contacts_list_from_google}
     print(d)

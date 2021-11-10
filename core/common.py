@@ -95,7 +95,7 @@ def display_vote_stats(
             "Yes Vote %": f"{yes_perc:,} %",
             "No Vote %": f"{no_perc:,} %",
             "Abstain Vote %": f"{abstain_perc:,} %",
-            "Total Vote %": f"{total_perc:,}",
+            "Total Vote %": f"{total_perc:,} %",
         },
         "Quorum": {
             f"{vote_quorum} % of total": f"{quorum_percentage:,}",
