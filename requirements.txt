@@ -1,1 +1,3 @@
 eth_utils
+pycryptodome
+pysha3
