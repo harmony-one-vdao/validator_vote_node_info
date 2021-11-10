@@ -75,8 +75,8 @@ grouped_data = {
 # {'not eligible to be elected next epoch', 'eligible to be elected next epoch', 'currently elected'}
 not_eligible_message = "not eligible to be elected next epoch"
 
-google_file_id = r"1i6pG4odOvS-CP-83WpzE4Yzaqw_fF1Dlav1lPWOzvow"
-google_gid = "864212071"
+google_file_id = r"13Lu3VVf7erkmGnOUe-I_Q-hONGGuFoKQ"
+google_gid = "2130181801"
 google_csv_filename = os.path.join("data", "validator_contacts.csv")
 contacts_list_from_google = ("Twitter", "Reddit", "Telegram", "Facebook", "Discord")
 
