@@ -57,8 +57,7 @@ def display_vote_stats(
 
     _, total_stake = call_api(network_info_lite)
     total_stake = round((float(total_stake["liveEpochTotalStake"]) / places))
-    quorum_percentage = percentage(total_stake, 100, factor=vote_quorum)
-
+    
     binance_kucoin = binance_kucoin // places
     binance_controlled_stake = binance_controlled_stake // places
 
@@ -80,7 +79,8 @@ def display_vote_stats(
     perc_diff = vote_quorum - (yes_perc + no_perc)
     minus_bk_perc = round(100 - no_perc - yes_perc - binance_kucoin_perc, 2)
 
-    number_left_to_pass = percentage(total_stake, 100, factor=perc_diff)
+    quorum_percentage = percentage(total_stake, 100, factor=vote_quorum, dp=None)
+    number_left_to_pass = percentage(total_stake, 100, factor=perc_diff, dp=None)
     perc_left_to_pass = round(vote_quorum - total_perc, 2)
 
     d = {
