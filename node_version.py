@@ -11,7 +11,7 @@ def validator_node_version(
     fn: str,
     latest_version: str,
     grouped_data: dict,
-    num_pages: int = 10,
+    num_pages: int = 100,
     save_json_data: bool = False,
 ) -> None:
 
@@ -28,9 +28,10 @@ def validator_node_version(
 
     prometheus_data = get(prometheus).json()["data"]
 
-    for i in range(0, num_pages):
+    i = 0
+    while 1:
         result, data = get_all_validators(i, result)
-        if not data:
+        if not data or i == num_pages:
             log.info(f"NO MORE DATA.. ENDING ON PAGE {i+1}.")
             break
 
@@ -123,7 +124,7 @@ def validator_node_version(
                         w.update(social_media_contacts)
 
                         csv_data.append(w)
-
+        i += 1
     save_csv(
         latest_version,
         fn,
@@ -154,5 +155,5 @@ if __name__ == "__main__":
     latest_version = latest_node_version.split("-")[1]
     create_folders_change_handler(latest_version)
     validator_node_version(
-        node_version_fn, latest_version, grouped_data, num_pages=10, save_json_data=True
+        node_version_fn, latest_version, grouped_data, num_pages=100, save_json_data=True
     )

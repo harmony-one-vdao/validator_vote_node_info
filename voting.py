@@ -10,7 +10,7 @@ def get_validator_voting_info(
     vote_address: str,
     vote_name: str,
     grouped_data: dict,
-    num_pages: int = 10,
+    num_pages: int = 100,
     save_json_data: bool = False,
     check_wallet: bool = False,
 ) -> None:
@@ -24,9 +24,10 @@ def get_validator_voting_info(
     csv_data = []
     result = []
 
-    for i in range(0, num_pages):
+    i = 0
+    while 1:
         result, data = get_all_validators(i, result)
-        if not data:
+        if not data or i == num_pages:
             log.info(f"NO MORE DATA.. ENDING ON PAGE {i+1}.")
             break
 
@@ -107,7 +108,7 @@ def get_validator_voting_info(
                     w.update(social_media_contacts)
 
                     csv_data.append(w)
-
+        i += 1
     save_csv(
         vote_name,
         f"{vote_name}-{fn}",
@@ -151,7 +152,7 @@ if __name__ == "__main__":
             vote_address,
             vote_name,
             grouped_data,
-            num_pages=10,
+            num_pages=100,
             save_json_data=True,
             check_wallet=False,
         )
