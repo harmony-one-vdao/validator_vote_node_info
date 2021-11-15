@@ -24,91 +24,74 @@ def get_validator_voting_info(
     csv_data = []
     result = []
 
-    i = 0
-    while 1:
-        result, data = get_all_validators(i, result)
-        if not data or i == num_pages:
-            log.info(f"NO MORE DATA.. ENDING ON PAGE {i+1}.")
-            break
+    for y in yield_data(result, check_wallet=check_wallet, num_pages=num_pages):
+        result, check_wallet, show, include, display_check, v, e = y
+        eth_add = convert_one_to_hex(v.address)
 
-        for d in data:
-            include, show = False, False
-            display_check = f"\tWallet {check_wallet} NOT Found."
+        if v.name in ("Binance Staking", "KuCoin"):
+            binance_kucoin += e.total_delegation
+            if v.name == "Binance Staking":
+                binance_controlled_stake += e.total_delegation
 
-            v, e = create_named_tuple_from_dict(d)
+        for d in v.delegations:
+            if d["delegator-address"] == binance_wallet:
+                binance_controlled_stake += d["amount"]
 
-            eth_add = convert_one_to_hex(v.address)
+        if e.active_status == "active":
+            w = {
+                "Name": v.name,
+                "Address": v.address,
+                "Staked": f"{round(float(e.total_delegation) / places):,}",
+                "Security Contact": v.security_contact,
+                "Website": v.website,
+                "Epos Status": e.epos_status,
+                "Active Status": e.active_status,
+            }
 
-            if v.address == check_wallet:
-                show = True
+            grouped, app = parse_contact_info(v)
 
-            if v.name in ("Binance Staking", "KuCoin"):
-                binance_kucoin += e.total_delegation
-                if v.name == "Binance Staking":
-                    binance_controlled_stake += e.total_delegation
+            if eth_add not in voted:
+                include = True
+                grouped_data[app] += grouped
+                w.update({"Group": app})
 
-            for d in v.delegations:
-                if d["delegator-address"] == binance_wallet:
-                    binance_controlled_stake += d["amount"]
+            # Already Voted, Check Weight
+            else:
+                choice = voted_results[eth_add]["msg"]["payload"]["choice"]
+                if int(choice) == 1:
+                    voted_yes_weight += e.total_delegation
+                    if show:
+                        display_check = f"\n\tWallet *- {check_wallet} -* Voted Yes!\n"
+                elif int(choice) == 2:
+                    voted_no_weight += e.total_delegation
+                    if show:
+                        display_check = f"\n\tWallet *- {check_wallet} -* Voted NO!"
 
-            if e.active_status == "active":
-                w = {
-                    "Name": v.name,
-                    "Address": v.address,
-                    "Staked": f"{round(float(e.total_delegation) / places):,}",
-                    "Security Contact": v.security_contact,
-                    "Website": v.website,
-                    "Epos Status": e.epos_status,
-                    "Active Status": e.active_status,
-                }
+                elif int(choice) == 3:
+                    voted_abstain_weight += e.total_delegation
+                    if show:
+                        display_check = (
+                            f"\n\tWallet *- {check_wallet} -* Voted to Abstain!"
+                        )
 
-                grouped, app = parse_contact_info(v)
+            if w["Name"] not in [x["Name"] for x in csv_data] and include:
+                ss_address, ss_blskeys = find_smartstakeid(
+                    v.address, smartstake_validator_list
+                )
+                w.update(
+                    {
+                        "Smartstake Summary": ss_address,
+                        "Smartstake BlsKeys": ss_blskeys,
+                    }
+                )
+                (
+                    grouped_data,
+                    social_media_contacts,
+                ) = parse_google_docs_contact_info(v, grouped_data)
 
-                if eth_add not in voted:
-                    include = True
-                    grouped_data[app] += grouped
-                    w.update({"Group": app})
+                w.update(social_media_contacts)
 
-                # Already Voted, Check Weight
-                else:
-                    choice = voted_results[eth_add]["msg"]["payload"]["choice"]
-                    if int(choice) == 1:
-                        voted_yes_weight += e.total_delegation
-                        if show:
-                            display_check = (
-                                f"\n\tWallet *- {check_wallet} -* Voted Yes!\n"
-                            )
-                    elif int(choice) == 2:
-                        voted_no_weight += e.total_delegation
-                        if show:
-                            display_check = f"\n\tWallet *- {check_wallet} -* Voted NO!"
-
-                    elif int(choice) == 3:
-                        voted_abstain_weight += e.total_delegation
-                        if show:
-                            display_check = (
-                                f"\n\tWallet *- {check_wallet} -* Voted to Abstain!"
-                            )
-
-                if w["Name"] not in [x["Name"] for x in csv_data] and include:
-                    ss_address, ss_blskeys = find_smartstakeid(
-                        v.address, smartstake_validator_list
-                    )
-                    w.update(
-                        {
-                            "Smartstake Summary": ss_address,
-                            "Smartstake BlsKeys": ss_blskeys,
-                        }
-                    )
-                    (
-                        grouped_data,
-                        social_media_contacts,
-                    ) = parse_google_docs_contact_info(v, grouped_data)
-
-                    w.update(social_media_contacts)
-
-                    csv_data.append(w)
-        i += 1
+                csv_data.append(w)
     save_csv(
         vote_name,
         f"{vote_name}-{fn}",
@@ -154,5 +137,5 @@ if __name__ == "__main__":
             grouped_data,
             num_pages=100,
             save_json_data=True,
-            check_wallet=False,
+            check_wallet=check_wallet,
         )

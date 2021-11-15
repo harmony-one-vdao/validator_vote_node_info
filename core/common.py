@@ -16,6 +16,26 @@ google_contacts = download_file_from_google_drive(
 )
 
 
+def yield_data(result: list, check_wallet: bool = False, num_pages: int = 100) -> tuple:
+    i = 0
+    while 1:
+        result, data = get_all_validators(i, result)
+        if not data or i == num_pages:
+            log.info(f"NO MORE DATA.. ENDING ON PAGE {i + 1}.")
+            break
+
+        for d in data:
+            show = False
+            include = False
+            display_check = f"Wallet {check_wallet} NOT Found."
+
+            v, e = create_named_tuple_from_dict(d)
+            if v.address == check_wallet:
+                show = True
+            yield result, check_wallet, show, include, display_check, v, e
+        i += 1
+
+
 def get_all_validators(i: int, result: list) -> dict:
     d = {
         "jsonrpc": "2.0",
@@ -57,7 +77,7 @@ def display_vote_stats(
 
     _, total_stake = call_api(network_info_lite)
     total_stake = round((float(total_stake["liveEpochTotalStake"]) / places))
-    
+
     binance_kucoin = binance_kucoin // places
     binance_controlled_stake = binance_controlled_stake // places
 
