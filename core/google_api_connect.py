@@ -8,23 +8,16 @@ def download_file_from_google_drive(
 ) -> None:
 
     URL = f"https://docs.google.com/spreadsheets/d/{id}/export?format=csv&id={id}&google_gid={google_gid}"
+    print(URL)
 
     session = Session()
 
-    response = session.get(
-        URL,
-        params={"id": id},
-        stream=True,
-    )
+    response = session.get(URL, params={"id": id}, stream=True,)
     token = get_confirm_token(response)
 
     if token:
         params = {"id": id, "confirm": token}
-        response = session.get(
-            URL,
-            params=params,
-            stream=True,
-        )
+        response = session.get(URL, params=params, stream=True,)
 
     return save_response_content(response, *args, **kw)
 

@@ -94,10 +94,12 @@ def display_vote_stats(
     binance_kucoin_perc = percentage(binance_kucoin, total_stake)
     binance_control_perc = percentage(binance_controlled_stake, total_stake)
 
-    minus_bk = int(total_stake - binance_kucoin - yes - no)
+    minus_bk = int(total_stake - binance_kucoin - yes - no - abstain)
 
-    perc_diff = vote_quorum - (yes_perc + no_perc)
-    minus_bk_perc = round(100 - no_perc - yes_perc - binance_kucoin_perc, 2)
+    perc_diff = vote_quorum - (yes_perc + no_perc + abstain_perc)
+    minus_bk_perc = round(
+        100 - no_perc - yes_perc - abstain_perc - binance_kucoin_perc, 2
+    )
 
     quorum_percentage = percentage(total_stake, 100, factor=vote_quorum, dp=None)
     number_left_to_pass = percentage(total_stake, 100, factor=perc_diff, dp=None)
