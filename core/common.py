@@ -32,7 +32,7 @@ def find_weight_range(staked: int) -> str:
 def yield_data(result: list, check_wallet: bool = False, num_pages: int = 100) -> tuple:
     i = 0
     while 1:
-        result, data = get_all_validators(i, result)
+        result, data = rpc_v2(result, "hmy_getAllValidatorInformation", [i])
         if not data or i == num_pages:
             log.info(f"NO MORE DATA.. ENDING ON PAGE {i + 1}.")
             break
@@ -48,11 +48,33 @@ def yield_data(result: list, check_wallet: bool = False, num_pages: int = 100) -
         i += 1
 
 
-def get_all_validators(i: int, result: list) -> dict:
+def uptime(v: namedtuple, validators: list) -> float:
+    uptime_percentage = 0.00
+
+    for x in validators["validators"]:
+        if x["address"] == v.address:
+            if x["uptime_percentage"]:
+                uptime_percentage = round(x["uptime_percentage"] * 100, 2)
+    return uptime_percentage
+
+
+def time_of_block(block_number: int) -> tuple:
+    _, harmony_data = rpc_v2([], "eth_getBlockByNumber", [block_number, True])
+    ts = int(harmony_data["timestamp"], 16)
+    date_ts = datetime.fromtimestamp(ts)
+    return date_ts, date_ts.strftime("%d-%m-%y")
+
+
+def months_between_dates(date_from: datetime) -> int:
+    today = datetime.today()
+    return (today.year - date_from.year) * 12 + today.month - date_from.month
+
+
+def rpc_v2(result: list, method: str, params: list) -> dict:
     d = {
         "jsonrpc": "2.0",
-        "method": "hmy_getAllValidatorInformation",
-        "params": [i],
+        "method": method,
+        "params": params,
         "id": 1,
     }
     try:
@@ -60,6 +82,7 @@ def get_all_validators(i: int, result: list) -> dict:
         data = r.json()["result"]
     except KeyError:
         log.info(r)
+        data = []
     result += data
     return result, data
 
