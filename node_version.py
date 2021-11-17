@@ -113,7 +113,10 @@ def validator_node_version(
 
                     csv_data.append(w)
     save_csv(
-        latest_version, fn, csv_data, [x for x in csv_data[0].keys()],
+        latest_version,
+        fn,
+        csv_data,
+        [x for x in csv_data[0].keys()],
     )
 
     display_stats = (

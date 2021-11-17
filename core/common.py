@@ -16,6 +16,19 @@ google_contacts = download_file_from_google_drive(
 )
 
 
+def find_weight_range(staked: int) -> str:
+    if staked > 100_000_000:
+        return "Above 100m"
+
+    if staked > 20_000_000:
+        return "20M - 100M"
+
+    if staked > 5_000_000:
+        return "5M - 20M"
+
+    return "Below 5M"
+
+
 def yield_data(result: list, check_wallet: bool = False, num_pages: int = 100) -> tuple:
     i = 0
     while 1:
@@ -298,11 +311,13 @@ def save_and_display(
     save_json_data: bool = True,
 ) -> None:
 
-    for k, v in grouped_data.items():
-        save_copypasta(fn, f"{fn}-" + k, v, **sep_map[k])
+    if grouped_data:
+        for k, v in grouped_data.items():
+            save_copypasta(fn, f"{fn}-" + k, v, **sep_map[k])
 
     if save_json_data:
         with open(all_validators_fn, "w") as j:
             json.dump(result, j, indent=4)
 
-    display(*display_stats, fn)
+    if display_stats:
+        display(*display_stats, fn)
