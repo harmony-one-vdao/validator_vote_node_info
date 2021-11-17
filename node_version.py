@@ -28,9 +28,10 @@ def validator_node_version(
     result = []
 
     prometheus_data = get(prometheus).json()["data"]
+    display_check = f"Wallet {check_wallet} NOT Found."
 
     for y in yield_data(result, check_wallet=check_wallet, num_pages=num_pages):
-        result, check_wallet, show, include, display_check, v, e = y
+        result, check_wallet, show, include, v, e = y
 
         is_elected = False
 
