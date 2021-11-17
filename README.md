@@ -180,6 +180,7 @@ Snapshot
 # Create weekly metrics
 
 > run the script - No terminal data display.
+> This script will take longer to run due to an RPC call for each validator (2-5 mins depending on connection)
 
 `python3 weekly_metrics.py`
 

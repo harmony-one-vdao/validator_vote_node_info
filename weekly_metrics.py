@@ -14,7 +14,7 @@ def get_metrics(
     _, validators = call_api(staking_info_url)
 
     for y in yield_data(result, num_pages=num_pages):
-        result, _, _, _, _, v, e = y
+        result, _, _, _, v, e = y
         # eth_add = convert_one_to_hex(v.address)
         staked = round(float(e.total_delegation) / places)
         try:
@@ -22,12 +22,10 @@ def get_metrics(
         except TypeError:
             continue
 
-        uptime_percentage = 0.00
-
-        for x in validators["validators"]:
-            if x["address"] == v.address:
-                if x["uptime_percentage"]:
-                    uptime_percentage = round(x["uptime_percentage"] * 100, 2)
+        uptime_percentage = uptime(v, validators)
+        created_dt, created_str = time_of_block(v.creation_height)
+        months = months_between_dates(created_dt)
+        band = find_weight_range(int(staked))
 
         if e.active_status == "active":
             w = {
@@ -37,8 +35,9 @@ def get_metrics(
                 "Epos Status": e.epos_status,
                 "Active Status": e.active_status,
                 "Weekly Uptime": f"{uptime_percentage}%",
-                "Created (Block Number)": v.creation_height,
-                "Band": find_weight_range(int(staked)),
+                "Created ": created_str,
+                "Months": months,
+                "Band": band,
                 "Smartstake Summary": ss_address,
             }
 
@@ -46,7 +45,7 @@ def get_metrics(
 
     save_csv(
         metrics_folder,
-        fn,
+        f'{fn}.csv',
         csv_data,
         [x for x in csv_data[0].keys()],
     )
