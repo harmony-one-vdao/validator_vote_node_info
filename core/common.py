@@ -40,12 +40,11 @@ def yield_data(result: list, check_wallet: bool = False, num_pages: int = 100) -
         for d in data:
             show = False
             include = False
-            display_check = f"Wallet {check_wallet} NOT Found."
 
             v, e = create_named_tuple_from_dict(d)
             if v.address == check_wallet:
                 show = True
-            yield result, check_wallet, show, include, display_check, v, e
+            yield result, check_wallet, show, include, v, e
         i += 1
 
 

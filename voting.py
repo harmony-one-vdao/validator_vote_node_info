@@ -2,7 +2,7 @@ from core.common import *
 from core.smartstake_connect import find_smartstakeid
 
 # check a single wallets vote
-check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
+check_wallet = "one1prz9j6c406h6uhkyurlx9yq9h2e2zrpasr2saf"
 
 
 def get_validator_voting_info(
@@ -24,8 +24,10 @@ def get_validator_voting_info(
     csv_data = []
     result = []
 
+    display_check = f"Wallet {check_wallet} NOT Found."
+
     for y in yield_data(result, check_wallet=check_wallet, num_pages=num_pages):
-        result, check_wallet, show, include, display_check, v, e = y
+        result, check_wallet, show, include, v, e = y
         eth_add = convert_one_to_hex(v.address)
 
         if v.name in ("Binance Staking", "KuCoin"):
@@ -62,6 +64,7 @@ def get_validator_voting_info(
                     voted_yes_weight += e.total_delegation
                     if show:
                         display_check = f"\n\tWallet *- {check_wallet} -* Voted Yes!\n"
+
                 elif int(choice) == 2:
                     voted_no_weight += e.total_delegation
                     if show:
