@@ -1,4 +1,5 @@
 import os, sys
+from datetime import datetime as dt
 
 sys.path.append(os.path.dirname(__file__))
 
@@ -16,6 +17,7 @@ vote_quorum = 51
 all_validators_fn = os.path.join("data", "all_validators.json")
 
 vote_fn = "validator_vote.csv"
+metrics_fn = f'Weekly_metrics_{dt.today().strftime("%d-%m-%y")}'
 
 node_version_fn = "validator_node_versions.csv"
 prometheus = "https://gateway.harmony.one/api/v1/metrics"
@@ -24,6 +26,7 @@ prometheus = "https://gateway.harmony.one/api/v1/metrics"
 harmony_api = "https://g.s0.t.hmny.io"
 
 network_info_lite = "https://api.stake.hmny.io/networks/harmony/network_info_lite"
+staking_info_url = "https://api.stake.hmny.io/networks/mainnet/validators"
 
 vote_api_dao_mainnet = "https://snapshot.hmny.io/api/dao-mainnet/proposal/{}"
 vote_api_staking_mainnet = "https://snapshot.hmny.io/api/staking-mainnet/proposal/{}"

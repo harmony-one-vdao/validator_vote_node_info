@@ -16,6 +16,19 @@ google_contacts = download_file_from_google_drive(
 )
 
 
+def find_weight_range(staked: int) -> str:
+    if staked > 100_000_000:
+        return "Above 100m"
+
+    if staked > 20_000_000:
+        return "20M - 100M"
+
+    if staked > 5_000_000:
+        return "5M - 20M"
+
+    return "Below 5M"
+
+
 def yield_data(result: list, check_wallet: bool = False, num_pages: int = 100) -> tuple:
     i = 0
     while 1:
@@ -94,10 +107,12 @@ def display_vote_stats(
     binance_kucoin_perc = percentage(binance_kucoin, total_stake)
     binance_control_perc = percentage(binance_controlled_stake, total_stake)
 
-    minus_bk = int(total_stake - binance_kucoin - yes - no)
+    minus_bk = int(total_stake - binance_kucoin - yes - no - abstain)
 
-    perc_diff = vote_quorum - (yes_perc + no_perc)
-    minus_bk_perc = round(100 - no_perc - yes_perc - binance_kucoin_perc, 2)
+    perc_diff = vote_quorum - (yes_perc + no_perc + abstain_perc)
+    minus_bk_perc = round(
+        100 - no_perc - yes_perc - abstain_perc - binance_kucoin_perc, 2
+    )
 
     quorum_percentage = percentage(total_stake, 100, factor=vote_quorum, dp=None)
     number_left_to_pass = percentage(total_stake, 100, factor=perc_diff, dp=None)
@@ -296,11 +311,13 @@ def save_and_display(
     save_json_data: bool = True,
 ) -> None:
 
-    for k, v in grouped_data.items():
-        save_copypasta(fn, f"{fn}-" + k, v, **sep_map[k])
+    if grouped_data:
+        for k, v in grouped_data.items():
+            save_copypasta(fn, f"{fn}-" + k, v, **sep_map[k])
 
     if save_json_data:
         with open(all_validators_fn, "w") as j:
             json.dump(result, j, indent=4)
 
-    display(*display_stats, fn)
+    if display_stats:
+        display(*display_stats, fn)

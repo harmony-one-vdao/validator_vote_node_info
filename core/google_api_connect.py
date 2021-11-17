@@ -8,6 +8,7 @@ def download_file_from_google_drive(
 ) -> None:
 
     URL = f"https://docs.google.com/spreadsheets/d/{id}/export?format=csv&id={id}&google_gid={google_gid}"
+    print(URL)
 
     session = Session()
 

@@ -1,0 +1,73 @@
+from core.common import *
+from core.smartstake_connect import find_smartstakeid
+
+
+def get_metrics(
+    fn: str,
+    num_pages: int = 100,
+    save_json_data: bool = False,
+) -> None:
+
+    csv_data = []
+    result = []
+
+    _, validators = call_api(staking_info_url)
+
+    for y in yield_data(result, num_pages=num_pages):
+        result, _, _, _, _, v, e = y
+        # eth_add = convert_one_to_hex(v.address)
+        staked = round(float(e.total_delegation) / places)
+        try:
+            ss_address, _ = find_smartstakeid(v.address, smartstake_validator_list)
+        except TypeError:
+            continue
+
+        uptime_percentage = 0.00
+
+        for x in validators["validators"]:
+            if x["address"] == v.address:
+                if x["uptime_percentage"]:
+                    uptime_percentage = round(x["uptime_percentage"] * 100, 2)
+
+        if e.active_status == "active":
+            w = {
+                "Name": v.name,
+                "Address": v.address,
+                "Staked": f"{staked:,}",
+                "Epos Status": e.epos_status,
+                "Active Status": e.active_status,
+                "Weekly Uptime": f"{uptime_percentage}%",
+                "Created (Block Number)": v.creation_height,
+                "Band": find_weight_range(int(staked)),
+                "Smartstake Summary": ss_address,
+            }
+
+            csv_data.append(w)
+
+    save_csv(
+        metrics_folder,
+        fn,
+        csv_data,
+        [x for x in csv_data[0].keys()],
+    )
+
+    # display_stats = None
+
+    # save_and_display(
+    #     fn,
+    #     result,
+    #     None,
+    #     display_stats,
+    #     display_vote_stats,
+    #     save_json_data=save_json_data,
+    # )
+
+
+if __name__ == "__main__":
+    metrics_folder = "Weekly-Metrics"
+    create_folders_change_handler(metrics_folder)
+    get_metrics(
+        metrics_fn,
+        num_pages=100,
+        save_json_data=True,
+    )
