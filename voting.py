@@ -123,11 +123,9 @@ def get_validator_voting_info(
 
 if __name__ == "__main__":
     votes_to_check = {
-        "HIP14": vote_api_staking_mainnet.format(
-            "QmXemgh9rm578TBbUTFXRh9KkxkvVJmEDCTgRfN7ymgAtN"
-        ),
-        "HIP15": vote_api_staking_mainnet.format(
-            "QmewxBWGsDNAMTC4q6DAzPwUkSLDpjDAqBc6JuTTZiA2D4"
+
+        "HIP20": vote_api_staking_mainnet.format(
+            "QmTzqwz6acqpEExRgSZ49dVa5516sFEJ4iSHJeJ8Xnf3yT"
         ),
     }
 

@@ -1,4 +1,4 @@
-from core.bech32 import *
+from bech32 import *
 from eth_utils import *
 
 
@@ -37,10 +37,10 @@ def convert_one_to_hex(addr: str) -> str:
 
 if __name__ == "__main__":
     eth_add = "0x08c4596B157EafAE5EC4E0fE629005Bab2a10C3D"
-    one_add = "one1prz9j6c406h6uhkyurlx9yq9h2e2zrpasr2saf"
+    one_add = "one1cwsf0lrq0hzphqa79q8pwrn6pnzzhwej4tqen3"
     converted_to_eth = convert_one_to_hex(one_add)
-    log.info(converted_to_eth)
-    log.info(converted_to_eth == eth_add)
+    print(converted_to_eth)
+    print(converted_to_eth == eth_add)
 
     # converted_to_one = bech32_decode(eth_add)
     # log.info(converted_to_one)
