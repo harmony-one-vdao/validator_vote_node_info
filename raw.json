@@ -1,0 +1,327 @@
+{
+    "circulating-supply": "11455362393.100671998921109692",
+    "epoch-last-block": 20185087,
+    "median-raw-stake": "5223539042243069569740865.550000000000000000",
+    "total-staking": 4.503665672011783e+27,
+    "total-supply": "13587291906.999999998921109692",
+    "current_block_number": 20166087,
+    "current_block_hash": "0xfa357d30a7e2c274852f55bdae38cc8822ade8463e9fdf4a6cbd73d7d1f17998",
+    "current_epoch": 788,
+    "time_next_epoch": 40812,
+    "effective_median_stake": "5223539042243069569740865.550000000000000000",
+    "total_seats": 900,
+    "total_seats_used": 900,
+    "externalShards": [
+        {
+            "total": 229,
+            "external": 204
+        },
+        {
+            "total": 261,
+            "external": 236
+        },
+        {
+            "total": 254,
+            "external": 229
+        },
+        {
+            "total": 256,
+            "external": 231
+        }
+    ],
+    "effective_median_stake_changed": 8.336645834909e-07,
+    "total-staking-changed": 7.154172662227091e-05,
+    "history": {
+        "782": {
+            "circulating-supply": "11450027483.100671998928924303",
+            "epoch-last-block": 19988479,
+            "median-raw-stake": "5133537808453018065108333.333333333333333333",
+            "total-staking": 4.603468096676584e+27,
+            "total-supply": "13581956996.999999998928924303",
+            "current_block_number": 19988475,
+            "current_block_hash": "0x5b8c1523d8d1a13407bcdc3e70834d18bcfc5f3b65f52e0326a4b31a7a54ab30",
+            "current_epoch": 782,
+            "time_next_epoch": 12.224,
+            "effective_median_stake": "5133537808453018065108333.333333333333333333",
+            "total_seats": 900,
+            "total_seats_used": 900,
+            "externalShards": [
+                {
+                    "total": 197,
+                    "external": 172
+                },
+                {
+                    "total": 271,
+                    "external": 246
+                },
+                {
+                    "total": 266,
+                    "external": 241
+                },
+                {
+                    "total": 266,
+                    "external": 241
+                }
+            ],
+            "effective_median_stake_changed": -0.0002092956953516583,
+            "total-staking-changed": 0.01
+        },
+        "783": {
+            "circulating-supply": "11451084889.100671998927583971",
+            "epoch-last-block": 20021247,
+            "median-raw-stake": "5128210617536151398441666.666666666666666666",
+            "total-staking": 4.5600854802751876e+27,
+            "total-supply": "13583014402.999999998927583971",
+            "current_block_number": 20021224,
+            "current_block_hash": "0xa99bee690ee8b93a39b5304bd0aaf2d614cfbed8fcbfd55cd4b96c1e49a903be",
+            "current_epoch": 783,
+            "time_next_epoch": 46.873999999999995,
+            "effective_median_stake": "5128210617536151398441666.666666666666666666",
+            "total_seats": 900,
+            "total_seats_used": 900,
+            "externalShards": [
+                {
+                    "total": 206,
+                    "external": 181
+                },
+                {
+                    "total": 270,
+                    "external": 245
+                },
+                {
+                    "total": 265,
+                    "external": 240
+                },
+                {
+                    "total": 259,
+                    "external": 234
+                }
+            ],
+            "effective_median_stake_changed": -1.038801116835977e-05,
+            "total-staking-changed": -9.513553328999962e-05
+        },
+        "784": {
+            "circulating-supply": "11452047319.100671998927295158",
+            "epoch-last-block": 20054015,
+            "median-raw-stake": "4993185474044699875045000.000000000000000000",
+            "total-staking": 4.451504972446612e+27,
+            "total-supply": "13583976832.999999998927295158",
+            "current_block_number": 20053993,
+            "current_block_hash": "0x3abf2b22c3ed81a111047d3caa05ad30f3e1d5e9b8704a375da697089fe8581d",
+            "current_epoch": 784,
+            "time_next_epoch": 46.904,
+            "effective_median_stake": "4993185474044699875045000.000000000000000000",
+            "total_seats": 900,
+            "total_seats_used": 900,
+            "externalShards": [
+                {
+                    "total": 218,
+                    "external": 193
+                },
+                {
+                    "total": 263,
+                    "external": 238
+                },
+                {
+                    "total": 259,
+                    "external": 234
+                },
+                {
+                    "total": 260,
+                    "external": 235
+                }
+            ],
+            "effective_median_stake_changed": -0.0002704188422267343,
+            "total-staking-changed": -0.0002439186488629219
+        },
+        "785": {
+            "circulating-supply": "11453023644.100671998921957238",
+            "epoch-last-block": 20086783,
+            "median-raw-stake": "5063232398096811937425491.250000000000000000",
+            "total-staking": 4.3463991219973533e+27,
+            "total-supply": "13584953157.999999998921957238",
+            "current_block_number": 20086763,
+            "current_block_hash": "0xe3e794f1b7fd63a2cefc8bba7f04f3f87ee90091200ad289beb1acbafc604130",
+            "current_epoch": 785,
+            "time_next_epoch": 41.900000000000006,
+            "effective_median_stake": "5063232398096811937425491.250000000000000000",
+            "total_seats": 900,
+            "total_seats_used": 900,
+            "externalShards": [
+                {
+                    "total": 227,
+                    "external": 202
+                },
+                {
+                    "total": 261,
+                    "external": 236
+                },
+                {
+                    "total": 255,
+                    "external": 230
+                },
+                {
+                    "total": 257,
+                    "external": 232
+                }
+            ],
+            "effective_median_stake_changed": 0.00013834427998691423,
+            "total-staking-changed": -0.00024182282275300601
+        },
+        "786": {
+            "circulating-supply": "11453971864.100671998918849651",
+            "epoch-last-block": 20119551,
+            "median-raw-stake": "5187864678093333333667232.416666666666666666",
+            "total-staking": 4.498564312450655e+27,
+            "total-supply": "13585901377.999999998918849651",
+            "current_block_number": 20119550,
+            "current_block_hash": "0x6f612929594f3f0744ecea03833fc1488d1887cc83681d00448e22fd538215b3",
+            "current_epoch": 786,
+            "time_next_epoch": 2.111,
+            "effective_median_stake": "5187864678093333333667232.416666666666666666",
+            "total_seats": 900,
+            "total_seats_used": 900,
+            "externalShards": [
+                {
+                    "total": 237,
+                    "external": 212
+                },
+                {
+                    "total": 250,
+                    "external": 225
+                },
+                {
+                    "total": 251,
+                    "external": 226
+                },
+                {
+                    "total": 262,
+                    "external": 237
+                }
+            ],
+            "effective_median_stake_changed": 0.00024023810899078193,
+            "total-staking-changed": 0.00033825278440980565
+        },
+        "787": {
+            "circulating-supply": "11454945179.100671998921813619",
+            "epoch-last-block": 20152319,
+            "median-raw-stake": "5223103574293069569740865.550000000000000000",
+            "total-staking": 4.4714456701812657e+27,
+            "total-supply": "13586874692.999999998921813619",
+            "current_block_number": 20152314,
+            "current_block_hash": "0x05f7c98b952157cbc6a96dd8b245b55b394e389d1ff4d005440d8e158f9b9bc9",
+            "current_epoch": 787,
+            "time_next_epoch": 11.085,
+            "effective_median_stake": "5223103574293069569740865.550000000000000000",
+            "total_seats": 900,
+            "total_seats_used": 900,
+            "externalShards": [
+                {
+                    "total": 229,
+                    "external": 204
+                },
+                {
+                    "total": 255,
+                    "external": 230
+                },
+                {
+                    "total": 254,
+                    "external": 229
+                },
+                {
+                    "total": 262,
+                    "external": 237
+                }
+            ],
+            "effective_median_stake_changed": 6.746735096959227e-05,
+            "total-staking-changed": -6.064848881030898e-05
+        },
+        "788": {
+            "circulating-supply": "11455362393.100671998921109692",
+            "epoch-last-block": 20185087,
+            "median-raw-stake": "5223539042243069569740865.550000000000000000",
+            "total-staking": 4.503665672011783e+27,
+            "total-supply": "13587291906.999999998921109692",
+            "current_block_number": 20166087,
+            "current_block_hash": "0xfa357d30a7e2c274852f55bdae38cc8822ade8463e9fdf4a6cbd73d7d1f17998",
+            "current_epoch": 788,
+            "time_next_epoch": 40812,
+            "effective_median_stake": "5223539042243069569740865.550000000000000000",
+            "total_seats": 900,
+            "total_seats_used": 900,
+            "externalShards": [
+                {
+                    "total": 229,
+                    "external": 204
+                },
+                {
+                    "total": 261,
+                    "external": 236
+                },
+                {
+                    "total": 254,
+                    "external": 229
+                },
+                {
+                    "total": 256,
+                    "external": 231
+                }
+            ],
+            "effective_median_stake_changed": 8.336645834909e-07,
+            "total-staking-changed": 7.154172662227091e-05
+        },
+        "null": {
+            "circulating-supply": "10779532045.100661999023966026",
+            "epoch-last-block": 19038207,
+            "median-raw-stake": "5238456355598075008558157.250000000000000000",
+            "total-staking": 4.6288581729233624e+27,
+            "total-supply": "13549416558.999999999023966026",
+            "effective_median_stake": "5238456355598075008558157.250000000000000000",
+            "total_seats": 900,
+            "total_seats_used": 900,
+            "externalShards": [
+                {
+                    "total": 236,
+                    "external": 211
+                },
+                {
+                    "total": 258,
+                    "external": 233
+                },
+                {
+                    "total": 248,
+                    "external": 223
+                },
+                {
+                    "total": 258,
+                    "external": 233
+                }
+            ],
+            "effective_median_stake_changed": null,
+            "total-staking-changed": -1.97580518540926e-06
+        }
+    },
+    "lastEpochTotalStake": 4.465840805733474e+27,
+    "lastEpochEffectiveStake": 5.22310357429307e+24,
+    "liveEpochTotalStake": 4.4931830089523215e+27,
+    "liveExternalShards": [
+        {
+            "external": 212,
+            "total": 382
+        },
+        {
+            "external": 233,
+            "total": 403
+        },
+        {
+            "external": 227,
+            "total": 397
+        },
+        {
+            "external": 228,
+            "total": 398
+        }
+    ],
+    "liveTotalSeatsUsed": 900,
+    "liveTotalSeats": 900
+}

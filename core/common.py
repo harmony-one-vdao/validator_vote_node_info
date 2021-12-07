@@ -251,7 +251,7 @@ def save_copypasta(
             w.write(f"{start}{x}{end}")
 
 
-def call_api(url: str) -> tuple:
+def call_api(url: str, fn: str = "raw") -> tuple:
 
     session = Session()
     session.headers = {
@@ -266,6 +266,8 @@ def call_api(url: str) -> tuple:
     if response.status_code == 200:
         try:
             d = response.json()
+            # with open(f"{fn}.json", "w") as j:
+            #     json.dump(d, j, indent=4)
         except json.decoder.JSONDecodeError:
             d = response.text
     # log.info(d)
