@@ -116,10 +116,10 @@ def display_vote_stats(
     binance_kucoin = binance_kucoin // places
     binance_controlled_stake = binance_controlled_stake // places
 
-    no = voted_no_weight // places
-    yes = voted_yes_weight // places
-    abstain = voted_abstain_weight // places
-    total_weight = round(yes + no + abstain, 2)
+    no = round((voted_no_weight // places), None)
+    yes = round((voted_yes_weight // places), None)
+    abstain = round((voted_abstain_weight // places), None)
+    total_weight = round(yes + no + abstain, None)
 
     no_perc = percentage(no, total_stake)
     yes_perc = percentage(yes, total_stake)

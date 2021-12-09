@@ -70,7 +70,6 @@ def get_validator_voting_info(
                     choice = int(choice)
                     if percent > 100 or percent in (1, 2):
                         percent = 100
-                        continue
 
                     if choice == 1:
                         voted_yes_weight += e.total_delegation // 100 * percent
@@ -101,15 +100,19 @@ def get_validator_voting_info(
                         "Smartstake BlsKeys": ss_blskeys,
                     }
                 )
-                (grouped_data, social_media_contacts,) = parse_google_docs_contact_info(
-                    v, grouped_data
-                )
+                (
+                    grouped_data,
+                    social_media_contacts,
+                ) = parse_google_docs_contact_info(v, grouped_data)
 
                 w.update(social_media_contacts)
 
                 csv_data.append(w)
     save_csv(
-        vote_name, f"{vote_name}-{fn}", csv_data, [x for x in csv_data[0].keys()],
+        vote_name,
+        f"{vote_name}-{fn}",
+        csv_data,
+        [x for x in csv_data[0].keys()],
     )
 
     display_stats = (

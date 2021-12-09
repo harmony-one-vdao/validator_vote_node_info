@@ -2,7 +2,11 @@ from core.common import *
 from core.smartstake_connect import find_smartstakeid
 
 
-def get_metrics(fn: str, num_pages: int = 100, save_json_data: bool = False,) -> None:
+def get_metrics(
+    fn: str,
+    num_pages: int = 100,
+    save_json_data: bool = False,
+) -> None:
 
     csv_data = []
     result = []
@@ -40,7 +44,10 @@ def get_metrics(fn: str, num_pages: int = 100, save_json_data: bool = False,) ->
             csv_data.append(w)
 
     save_csv(
-        metrics_folder, f"{fn}.csv", csv_data, [x for x in csv_data[0].keys()],
+        metrics_folder,
+        f"{fn}.csv",
+        csv_data,
+        [x for x in csv_data[0].keys()],
     )
 
     # display_stats = None
@@ -59,5 +66,7 @@ if __name__ == "__main__":
     metrics_folder = "Weekly-Metrics"
     create_folders_change_handler(metrics_folder)
     get_metrics(
-        metrics_fn, num_pages=100, save_json_data=True,
+        metrics_fn,
+        num_pages=100,
+        save_json_data=True,
     )

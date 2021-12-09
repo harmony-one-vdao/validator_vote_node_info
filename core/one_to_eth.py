@@ -36,7 +36,7 @@ def convert_one_to_hex(addr: str) -> str:
 
 
 if __name__ == "__main__":
-    eth_add = "0x08c4596B157EafAE5EC4E0fE629005Bab2a10C3D"
+    eth_add = "0x185877050ccFDa4D1d28Cff047FE84237C97405E"
     one_add = "one1cwsf0lrq0hzphqa79q8pwrn6pnzzhwej4tqen3"
     converted_to_eth = convert_one_to_hex(one_add)
     print(converted_to_eth)
