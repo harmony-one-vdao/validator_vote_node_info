@@ -45,7 +45,7 @@ def get_metrics(
 
     save_csv(
         metrics_folder,
-        f'{fn}.csv',
+        f"{fn}.csv",
         csv_data,
         [x for x in csv_data[0].keys()],
     )

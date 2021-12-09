@@ -3,7 +3,7 @@ from json import dump
 from datetime import datetime
 
 block_number = 10000000
-harmony_api = "https://g.s0.t.hmny.io"
+harmony_api = "https://api.harmony.one"
 
 
 def rpc_v2(result: list, method: str, params: list) -> dict:
@@ -18,6 +18,7 @@ def rpc_v2(result: list, method: str, params: list) -> dict:
         data = r.json()["result"]
     except KeyError:
         print(r)
+        data = r.json()
     result += data
     return result, data
 
@@ -34,7 +35,14 @@ def months_between_dates(date_from: datetime) -> int:
     return (today.year - date_from.year) * 12 + today.month - date_from.month
 
 
-created_dt, created_str = time_of_block(block_number)
+created_dt, created_str = time_of_block(18867042)
 print(created_str)
 months = months_between_dates(created_dt)
 print(months)
+
+address = "one1ltlmxwujfsens80wxh2y2qfaxgqzf9tjex3fc2"
+# address = "one1dsj3lknm2caqpff74j9tade6wlc4vmyt4hxfcv"
+res, data = rpc_v2(
+    [], "hmyv2_getValidatorInformationByBlockNumber", [address, 18867042]
+)
+print(data)
