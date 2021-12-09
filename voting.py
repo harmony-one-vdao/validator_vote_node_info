@@ -139,6 +139,12 @@ if __name__ == "__main__":
         "HIP20": vote_api_dao_mainnet.format(
             "QmTzqwz6acqpEExRgSZ49dVa5516sFEJ4iSHJeJ8Xnf3yT"
         ),
+        "HIP16": vote_api_staking_mainnet.format(
+            "QmPmHnuS1ayrBJ9cL16S39xiUbwcSKx5hnPKFLVKtN489o"
+        ),
+        "HIP17": vote_api_staking_mainnet.format(
+            "QmR1CoazT5suvF1zU2Dk4ZPNiF6GDKUzQkcX3ABENAHjQb"
+        ),
     }
 
     for vote_name, vote_address in votes_to_check.items():
