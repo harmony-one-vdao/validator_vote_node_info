@@ -1,7 +1,7 @@
 import logging
 from core.blskeys import *
 
-latest_node_version = "v7174-v4.3.0-0-g15f9b2d1"
+latest_node_version = "v7211-v4.3.1-0-g65614950"
 
 # check a single wallets Node version.
 check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
