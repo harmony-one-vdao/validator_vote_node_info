@@ -7,7 +7,7 @@ check_wallet = "one1prz9j6c406h6uhkyurlx9yq9h2e2zrpasr2saf"
 
 def get_validator_voting_info(
     fn: str,
-    vote_address: str,
+    vote_address_args: str,
     vote_name: str,
     grouped_data: dict,
     num_pages: int = 100,
@@ -15,9 +15,12 @@ def get_validator_voting_info(
     check_wallet: bool = False,
 ) -> None:
 
+    vote_address = gov_base.format(*vote_address_args)
+    vote_address_api = snapshot_api_base.format(*vote_address_args)
+
     log.info(vote_address)
 
-    voted, voted_results = call_api(vote_address, fn=f"{vote_name}-{fn}")
+    voted, voted_results = call_api(vote_address_api, fn=f"{vote_name}-{fn}")
     voted_yes_weight = 0
     voted_no_weight = 0
     voted_abstain_weight = 0
@@ -135,20 +138,17 @@ def get_validator_voting_info(
 
 
 if __name__ == "__main__":
+
     votes_to_check = {
-        "HIP16": vote_api_staking_mainnet.format(
-            "QmPmHnuS1ayrBJ9cL16S39xiUbwcSKx5hnPKFLVKtN489o"
-        ),
-        "HIP17": vote_api_staking_mainnet.format(
-            "QmR1CoazT5suvF1zU2Dk4ZPNiF6GDKUzQkcX3ABENAHjQb"
-        ),
+        "HIP16": ("staking-mainnet", "QmPp4qyickzmtJN2GQTKFHTGxEnQB583Es65VB8Rx8qws1"),
+        "HIP17": ("staking-mainnet", "QmR1CoazT5suvF1zU2Dk4ZPNiF6GDKUzQkcX3ABENAHjQb"),
     }
 
-    for vote_name, vote_address in votes_to_check.items():
+    for vote_name, vote_address_args in votes_to_check.items():
         create_folders_change_handler(vote_name)
         get_validator_voting_info(
             vote_fn,
-            vote_address,
+            vote_address_args,
             vote_name,
             grouped_data,
             num_pages=100,
