@@ -142,6 +142,7 @@ if __name__ == "__main__":
     votes_to_check = {
         "HIP16": ("staking-mainnet", "QmPp4qyickzmtJN2GQTKFHTGxEnQB583Es65VB8Rx8qws1"),
         "HIP17": ("staking-mainnet", "QmR1CoazT5suvF1zU2Dk4ZPNiF6GDKUzQkcX3ABENAHjQb"),
+        "HIP22": ("staking-mainnet", "QmeBUd71Tmf8JdwEMUJiEh65sFWn4WFXNZ5BGK6pmswY3b"),
     }
 
     for vote_name, vote_address_args in votes_to_check.items():
