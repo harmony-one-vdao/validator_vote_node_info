@@ -137,10 +137,13 @@ def get_validator_voting_info(
 if __name__ == "__main__":
     votes_to_check = {
         "HIP16": vote_api_staking_mainnet.format(
-            "QmPmHnuS1ayrBJ9cL16S39xiUbwcSKx5hnPKFLVKtN489o"
+            "QmPxUyTGqmEmBi4p1cvvoUg8aXy5oGbhC2R7VS6o8jEHVM"
         ),
         "HIP17": vote_api_staking_mainnet.format(
             "QmR1CoazT5suvF1zU2Dk4ZPNiF6GDKUzQkcX3ABENAHjQb"
+        ),
+        "HIP22": vote_api_staking_mainnet.format(
+            "QmeBUd71Tmf8JdwEMUJiEh65sFWn4WFXNZ5BGK6pmswY3b"
         ),
     }
 
