@@ -40,9 +40,7 @@ print(created_str)
 months = months_between_dates(created_dt)
 print(months)
 
-address = "one1ltlmxwujfsens80wxh2y2qfaxgqzf9tjex3fc2"
+address = "one1prz9j6c406h6uhkyurlx9yq9h2e2zrpasr2saf"
 # address = "one1dsj3lknm2caqpff74j9tade6wlc4vmyt4hxfcv"
-res, data = rpc_v2(
-    [], "hmyv2_getValidatorInformationByBlockNumber", [address, 18867042]
-)
+res, data = rpc_v2([], "hmyv2_getValidatorInformation", [address])
 print(data)

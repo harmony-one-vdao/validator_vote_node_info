@@ -66,32 +66,41 @@ def get_validator_voting_info(
             # Already Voted, Check Weight
             else:
                 choices = voted_results[eth_add]["msg"]["payload"]["choice"]
-                if not isinstance(choices, dict):
+                if not isinstance(choices, (dict, list)):
                     choices = {choices: 100}
 
-                for choice, percent in choices.items():
-                    choice = int(choice)
-                    if percent > 100 or percent in (1, 2):
-                        percent = 100
+                # for elections we just want a lst of non voters
 
-                    if choice == 1:
-                        voted_yes_weight += e.total_delegation // 100 * percent
-                        if show:
-                            display_check = (
-                                f"\n\tWallet *- {check_wallet} -* Voted Yes!\n"
-                            )
+                if isinstance(choices, list):
+                    if show:
+                        display_check = f"\n\tWallet *- {check_wallet} -* Voted Yes!\n"
+                else:
 
-                    if choice == 2:
-                        voted_no_weight += e.total_delegation // 100 * percent
-                        if show:
-                            display_check = f"\n\tWallet *- {check_wallet} -* Voted NO!"
+                    for choice, percent in choices.items():
+                        choice = int(choice)
+                        if percent > 100 or percent in (1, 2):
+                            percent = 100
 
-                    if choice == 3:
-                        voted_abstain_weight += e.total_delegation // 100 * percent
-                        if show:
-                            display_check = (
-                                f"\n\tWallet *- {check_wallet} -* Voted to Abstain!"
-                            )
+                        if choice == 1:
+                            voted_yes_weight += e.total_delegation // 100 * percent
+                            if show:
+                                display_check = (
+                                    f"\n\tWallet *- {check_wallet} -* Voted Yes!\n"
+                                )
+
+                        if choice == 2:
+                            voted_no_weight += e.total_delegation // 100 * percent
+                            if show:
+                                display_check = (
+                                    f"\n\tWallet *- {check_wallet} -* Voted NO!"
+                                )
+
+                        if choice == 3:
+                            voted_abstain_weight += e.total_delegation // 100 * percent
+                            if show:
+                                display_check = (
+                                    f"\n\tWallet *- {check_wallet} -* Voted to Abstain!"
+                                )
 
             if w["Name"] not in [x["Name"] for x in csv_data] and include:
                 ss_address, ss_blskeys = find_smartstakeid(
@@ -140,9 +149,9 @@ def get_validator_voting_info(
 if __name__ == "__main__":
 
     votes_to_check = {
-        "HIP16": ("staking-mainnet", "QmPp4qyickzmtJN2GQTKFHTGxEnQB583Es65VB8Rx8qws1"),
-        "HIP17": ("staking-mainnet", "QmR1CoazT5suvF1zU2Dk4ZPNiF6GDKUzQkcX3ABENAHjQb"),
-        "HIP22": ("staking-mainnet", "QmeBUd71Tmf8JdwEMUJiEh65sFWn4WFXNZ5BGK6pmswY3b"),
+        "vDAO1": ("dao-mainnet", "QmXxJLDbJZ3RcuW5g2PuuhgEot3eihkNjiyYUJmU9YUaqs"),
+        "HIP25": ("dao-mainnet", "Qmc61Qv6AvW2GCPkNHEedzYi57pJTVNwA5dgoL89ccwCE9"),
+        "HIP16": ("staking-mainnet", "QmfCBuPFnAx9N5GKBrFBtCkjyff2UzxULhwhsEcGWYdTRY"),
     }
 
     for vote_name, vote_address_args in votes_to_check.items():

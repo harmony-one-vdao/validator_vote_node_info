@@ -23,8 +23,8 @@ node_version_fn = "validator_node_versions.csv"
 prometheus = "https://gateway.harmony.one/api/v1/metrics"
 
 # harmony_api = "https://api.harmony.one"
-harmony_api = 'https://a.api.s0.t.hmny.io'
-# harmony_api = 'https://rpc.s0.t.hmny.io'
+# harmony_api = 'https://a.api.s0.t.hmny.io'
+harmony_api = "https://rpc.s0.t.hmny.io"
 # harmony_api = 'https://api.s0.t.hmny.io/'
 # harmony_api = "https://g.s0.t.hmny.io"
 
