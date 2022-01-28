@@ -1,0 +1,56 @@
+contract - Uniswap Router02 Viper
+0xf012702a5f0e54015362cBCA26a26fc90AA832a3
+
+add ABI
+
+[		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "amountOutMin",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address[]",
+					"name": "path",
+					"type": "address[]"
+				},
+				{
+					"internalType": "address",
+					"name": "to",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "deadline",
+					"type": "uint256"
+				}
+			],
+			"name": "swapExactETHForTokens",
+			"outputs": [
+				{
+					"internalType": "uint256[]",
+					"name": "amounts",
+					"type": "uint256[]"
+				}
+			],
+			"stateMutability": "payable",
+			"type": "function"
+		}
+    ]
+
+method - swapExactETHForTokens
+
+Value - number ONE to swapExactETHForTokens
+
+amountOutMin - 0 (any amount or specify if price impact is high...)
+
+path - [ONE_ADDRESS, TOKEN_ADDRESS]
+
+example ONE / USDT: ["0xcf664087a5bb0237a0bad6742852ec6c8d69a27a", "0x3c2b8be99c50593081eaa2a724f0b8285f5aba8f"]  
+
+to (address) - MULTISIG_ADDRESS
+
+deadline - time now in unix time - Has to be in the future otheerwise it will fail.  For multisig it is best to add maybe a day or 2 if people are not readily available.
+This is the MAX time before reverting.  You will get an error of 'This will likely fail' if the time is incorrect..
+https://www.unixtimestamp.com/
