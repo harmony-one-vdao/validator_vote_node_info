@@ -172,6 +172,22 @@ def display_vote_stats(
         "Snapshot": {"Vote Address": vote_full_address},
     }
 
+    # add Q% of quorum if >51%
+    if total_perc > vote_quorum:
+        q_no_perc = percentage(no, total_weight)
+        q_yes_perc = percentage(yes, total_weight)
+        q_abstain_perc = percentage(abstain, total_weight)
+
+        d.update(
+            {
+                "Percentages of Quorum": {
+                    "Yes Vote %": f"{q_yes_perc:,} %",
+                    "No Vote %": f"{q_no_perc:,} %",
+                    "Abstain Vote %": f"{q_abstain_perc:,} %",
+                }
+            }
+        )
+
     csv_save_data = {}
 
     for title, info in d.items():
