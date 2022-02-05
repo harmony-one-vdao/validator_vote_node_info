@@ -150,8 +150,6 @@ if __name__ == "__main__":
 
     votes_to_check = {
 
-        "vDAO1": ("dao-mainnet", "QmXxJLDbJZ3RcuW5g2PuuhgEot3eihkNjiyYUJmU9YUaqs"),
-        "HIP25": ("dao-mainnet", "Qmc61Qv6AvW2GCPkNHEedzYi57pJTVNwA5dgoL89ccwCE9"),
         "HIP16": ("staking-mainnet", "QmfCBuPFnAx9N5GKBrFBtCkjyff2UzxULhwhsEcGWYdTRY"),
 
     }
