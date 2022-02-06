@@ -150,7 +150,7 @@ if __name__ == "__main__":
 
     votes_to_check = {
 
-        "HIP16": ("staking-mainnet", "QmfCBuPFnAx9N5GKBrFBtCkjyff2UzxULhwhsEcGWYdTRY"),
+        "HIP25": ("dao-mainnet", "Qmc61Qv6AvW2GCPkNHEedzYi57pJTVNwA5dgoL89ccwCE9"),
 
     }
 
