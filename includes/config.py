@@ -97,7 +97,6 @@ def create_data_path(pth: str, data_path: str = "data") -> os.path:
 
 create_data_path((""))
 
-
 import logging
 
 file_handler = logging.FileHandler(filename=os.path.join("data", "data.log"))

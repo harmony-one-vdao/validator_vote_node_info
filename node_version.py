@@ -1,8 +1,8 @@
 import logging
 from core.blskeys import *
 
-latest_node_version = "v7211-v3.2.0-0-g65614950"
-
+latest_node_version = "v7331-v4.3.4-0-g4ea9072e"
+#  v7331-v4.3.4-0-g4ea9072e-dirty
 # check a single wallets Node version.
 check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
 
@@ -27,7 +27,11 @@ def validator_node_version(
     csv_data = []
     result = []
 
-    prometheus_data = get(prometheus).json()["data"]
+    res, _, prometheus_data = call_api(prometheus)
+    if not res:
+        log.error("Error Connecting, Shutting Down.. ")
+        return False
+    prometheus_data = prometheus_data.json()["data"]
     display_check = f"Wallet {check_wallet} NOT Found."
 
     for y in yield_data(result, check_wallet=check_wallet, num_pages=num_pages):
@@ -50,7 +54,8 @@ def validator_node_version(
                 is_elected = True
 
             for blskey in v.bls_public_keys:
-                found, msg, versions, shard = bls_key_version(blskey, prometheus_data)
+                _, _, versions, shard = bls_key_version(blskey, prometheus_data)
+                print(versions)
 
                 # We only need to register 1 key per shard because it is the binary version not the key that require updating.
                 if shard not in validators[v.name]:
@@ -60,6 +65,7 @@ def validator_node_version(
                     if (
                         include
                         and (latest_node_version not in versions)
+                        # and (latest_node_version + '-dirty' not in versions)
                         and (not v.address in updated_but_vers_not_found)
                     ):
                         include = False

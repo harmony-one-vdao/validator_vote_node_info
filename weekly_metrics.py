@@ -11,7 +11,10 @@ def get_metrics(
     csv_data = []
     result = []
 
-    _, validators = call_api(staking_info_url)
+    res, _, validators = call_api(staking_info_url)
+    if not res:
+        log.error("Error Connecting, Shutting Down.. ")
+        return False
 
     for y in yield_data(result, num_pages=num_pages):
         result, _, _, _, v, e = y
