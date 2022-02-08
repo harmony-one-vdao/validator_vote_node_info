@@ -34,7 +34,7 @@ def validator_node_version(
     if not res:
         log.error("Error Connecting, Shutting Down.. ")
         return False
-    prometheus_data = prometheus_data.json()["data"]
+    prometheus_data = prometheus_data["data"]
     display_check = f"Wallet {check_wallet} NOT Found."
 
     for y in yield_data(result, check_wallet=check_wallet, num_pages=num_pages):
