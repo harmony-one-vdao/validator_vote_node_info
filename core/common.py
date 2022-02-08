@@ -110,7 +110,10 @@ def display_vote_stats(
     proposal: str,
 ) -> None:
 
-    _, total_stake = call_api(network_info_lite)
+    res, _, total_stake = call_api(network_info_lite)
+    if not res:
+        log.error("Error Connecting, Shutting Down.. ")
+        return False
     total_stake = round((float(total_stake["liveEpochTotalStake"]) / places))
 
     binance_kucoin = binance_kucoin // places
@@ -276,18 +279,27 @@ def call_api(url: str, fn: str = "raw") -> tuple:
         "Connection": "keep-alive",
     }
 
+    res = False
+
     response = session.get(url)
+    status = response.status_code
     log.info(response)
     d = response.text
-    if response.status_code == 200:
+    keys = []
+    if status == 200:
         try:
             d = response.json()
+            keys = [x for x in d]
+            res = True
             # with open(f"{fn}.json", "w") as j:
             #     json.dump(d, j, indent=4)
-        except json.decoder.JSONDecodeError:
-            d = response.text
+        except json.decoder.JSONDecodeError as e:
+            log.error(e)
+    else:
+        log.error(f"Cannot connect to API < {status} >  Error: {d[:20]}...")
+
     # log.info(d)
-    return [x for x in d], d
+    return res, keys, d
 
 
 def sort_group(contact: str) -> tuple:

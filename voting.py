@@ -20,7 +20,10 @@ def get_validator_voting_info(
 
     log.info(vote_address)
 
-    voted, voted_results = call_api(vote_address_api, fn=f"{vote_name}-{fn}")
+    res, voted, voted_results = call_api(vote_address_api, fn=f"{vote_name}-{fn}")
+    if not res:
+        log.error("Error Connecting, Shutting Down.. ")
+        return False
     voted_yes_weight = 0
     voted_no_weight = 0
     voted_abstain_weight = 0
@@ -149,8 +152,9 @@ def get_validator_voting_info(
 if __name__ == "__main__":
 
     votes_to_check = {
-
+        # "vDAO1": ("dao-mainnet", "QmXxJLDbJZ3RcuW5g2PuuhgEot3eihkNjiyYUJmU9YUaqs"),
         "HIP25": ("dao-mainnet", "Qmc61Qv6AvW2GCPkNHEedzYi57pJTVNwA5dgoL89ccwCE9"),
+        # "HIP16": ("staking-mainnet", "QmfCBuPFnAx9N5GKBrFBtCkjyff2UzxULhwhsEcGWYdTRY"),
 
     }
 
