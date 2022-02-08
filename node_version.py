@@ -67,7 +67,7 @@ def validator_node_version(
                     if (
                         include
                         and (latest_node_version not in versions)
-                        # and (latest_node_version + '-dirty' not in versions)
+                        # and ((latest_node_version not in versions) or (latest_node_version + '-dirty' not in versions))
                         and (not v.address in updated_but_vers_not_found)
                     ):
                         include = False
