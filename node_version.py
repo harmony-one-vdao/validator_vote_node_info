@@ -64,10 +64,11 @@ def validator_node_version(
                     validators[v.name] += [int(shard)]
                     shards = validators[v.name]
 
+                    vers = (latest_node_version not in versions) and (f'{latest_node_version}-dirty' not in versions)
                     if (
                         include
                         # and (latest_node_version not in versions)
-                        and ((latest_node_version not in versions) or (f'{latest_node_version}-dirty' not in versions))
+                        and vers
                         and (not v.address in updated_but_vers_not_found)
                     ):
                         include = False
@@ -167,5 +168,5 @@ if __name__ == "__main__":
             break
         else:
             log.error('Unable to connect.  sleeping for 10 seconds then retrying.. ')
-            sleep(10)
+            sleep(1)
         c+=1
