@@ -4,7 +4,7 @@ from core.blskeys import *
 
 
 latest_node_version = "v7331-v4.3.4-0-g4ea9072e"
-#  v7331-v4.3.4-0-g4ea9072e-dirty
+                    #  v7331-v4.3.4-0-g4ea9072e-dirty
 
 # check a single wallets Node version.
 check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
@@ -66,8 +66,8 @@ def validator_node_version(
 
                     if (
                         include
-                        and (latest_node_version not in versions)
-                        # and ((latest_node_version not in versions) or (latest_node_version + '-dirty' not in versions))
+                        # and (latest_node_version not in versions)
+                        and ((latest_node_version not in versions) or (f'{latest_node_version}-dirty' not in versions))
                         and (not v.address in updated_but_vers_not_found)
                     ):
                         include = False
