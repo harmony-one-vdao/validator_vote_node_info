@@ -58,7 +58,6 @@ def validator_node_version(
 
             for blskey in v.bls_public_keys:
                 _, _, versions, shard = bls_key_version(blskey, prometheus_data)
-                print(versions)
 
                 # We only need to register 1 key per shard because it is the binary version not the key that require updating.
                 if shard not in validators[v.name]:
