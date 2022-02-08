@@ -167,6 +167,6 @@ if __name__ == "__main__":
         if res:
             break
         else:
+            log.error('Unable to connect.  sleeping for 10 seconds then retrying.. ')
             sleep(10)
-            log.error('Unable to connect.  Retrying.. ')
         c+=1
