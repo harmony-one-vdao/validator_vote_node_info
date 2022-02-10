@@ -22,10 +22,12 @@ def validator_node_version(
     active_validators = 0
     not_updated = 0
     is_updated = 0
+    unknown = 0
 
     elected = 0
     elected_not_updated = 0
     elected_is_updated = 0
+    elected_unknown = 0
 
     csv_data = []
     result = []
@@ -71,20 +73,30 @@ def validator_node_version(
                         and vers
                         and (not v.address in updated_but_vers_not_found)
                     ):
+                        versions = versions[0] if len(versions) <= 1 else versions
+
                         include = False
-                        not_updated += 1
+
+                        if versions == "Version Not Found":
+                            unknown += 1
+                            if is_elected:
+                                elected_unknown += 1
+                        else:
+                            not_updated += 1
+                            if is_elected:
+                                elected_not_updated += 1
+
                         if show:
                             display_check = f"\n\tWallet *- {check_wallet} -* Node Updated = NO!\t\nNode Version(s) = {versions}\n"
-                        if is_elected:
-                            elected_not_updated += 1
+                        
 
                         w = {
                             "Name": v.name,
                             "Address": v.address,
                             "Security Contact": v.security_contact,
                             "Website": v.website,
-                            "Epos Status": e.epos_status,
                             "Active Status": e.active_status,
+                            "Epos Status": e.epos_status,                            
                             # "blskey",
                             "Version": versions,
                         }
@@ -135,7 +147,9 @@ def validator_node_version(
         not_updated,
         elected,
         elected_is_updated,
-        elected_not_updated,
+        elected_not_updated,        
+        unknown,
+        elected_unknown,
         display_check,
     )
     save_and_display(
