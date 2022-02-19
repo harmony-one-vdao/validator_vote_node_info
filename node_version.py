@@ -4,7 +4,7 @@ from core.blskeys import *
 
 
 latest_node_version = "v7331-v4.3.4-0-g4ea9072e"
-                    #  v7331-v4.3.4-0-g4ea9072e-dirty
+#  v7331-v4.3.4-0-g4ea9072e-dirty
 
 # check a single wallets Node version.
 check_wallet = "one199wuwepjjefwyyx8tc3g74mljmnnfulnzf7a6a"
@@ -66,7 +66,9 @@ def validator_node_version(
                     validators[v.name] += [int(shard)]
                     shards = validators[v.name]
 
-                    vers = (latest_node_version not in versions) and (f'{latest_node_version}-dirty' not in versions)
+                    vers = (latest_node_version not in versions) and (
+                        f"{latest_node_version}-dirty" not in versions
+                    )
                     if (
                         include
                         # and (latest_node_version not in versions)
@@ -88,7 +90,6 @@ def validator_node_version(
 
                         if show:
                             display_check = f"\n\tWallet *- {check_wallet} -* Node Updated = NO!\t\nNode Version(s) = {versions}\n"
-                        
 
                         w = {
                             "Name": v.name,
@@ -96,7 +97,7 @@ def validator_node_version(
                             "Security Contact": v.security_contact,
                             "Website": v.website,
                             "Active Status": e.active_status,
-                            "Epos Status": e.epos_status,                            
+                            "Epos Status": e.epos_status,
                             # "blskey",
                             "Version": versions,
                         }
@@ -147,7 +148,7 @@ def validator_node_version(
         not_updated,
         elected,
         elected_is_updated,
-        elected_not_updated,        
+        elected_not_updated,
         unknown,
         elected_unknown,
         display_check,
@@ -166,10 +167,10 @@ def validator_node_version(
 if __name__ == "__main__":
     latest_version = latest_node_version.split("-")[1]
     create_folders_change_handler(latest_version)
-    
+
     c = 1
     while 1:
-        log.info(f'{c}) Attempting to get data...')
+        log.info(f"{c}) Attempting to get data...")
         res = validator_node_version(
             node_version_fn,
             latest_version,
@@ -181,6 +182,6 @@ if __name__ == "__main__":
         if res:
             break
         else:
-            log.error('Unable to connect.  sleeping for 10 seconds then retrying.. ')
+            log.error("Unable to connect.  sleeping for 10 seconds then retrying.. ")
             sleep(1)
-        c+=1
+        c += 1

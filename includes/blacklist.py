@@ -2,10 +2,10 @@ blacklist = ("@colorreader on telegram.",)
 
 # Use one address as some names use chars that might not be parsed correctly..
 updated_but_vers_not_found = (
-    # "one1rw02h0xmks5ungx63tkdw0xn8xc4hjzf3xt8tw",  # PERMANENT Harmony Hive - Mech Warrior | Little man - lost wallet.
-    # "one1kf42rl6yg2avkjsu34ch2jn8yjs64ycn4n9wdj",  # PERMANENT Pops - SOPH will ensure.
-    # "one1nf50jmyvckd0795mu4qhm6zfxppesulafejzvl",  # CoinChowder
-    # "one1nef0c8kgy30delcckf87jaegdp7s7ntrknvajj",  # Unifi Protocol Dao,
+    "one1rw02h0xmks5ungx63tkdw0xn8xc4hjzf3xt8tw",  # PERMANENT Harmony Hive - Mech Warrior | Little man - lost wallet.
+    "one1kf42rl6yg2avkjsu34ch2jn8yjs64ycn4n9wdj",  # PERMANENT Pops - SOPH will ensure.
+    "one1nf50jmyvckd0795mu4qhm6zfxppesulafejzvl",  # CoinChowder
+    "one1nef0c8kgy30delcckf87jaegdp7s7ntrknvajj",  # Unifi Protocol Dao,
     # "one1s269hx6ch3u6hxuag5sp5ggwc68vem6d8du6ut",  # One United Power
     # "one1frsph4jajyp9qnf6nw4eft70v0gula7tptmurd",  # Rhythm
     # "one1kp4h9f9hj859vasam9wk037r0gnsmguq5sw3xd",  # Freyala
