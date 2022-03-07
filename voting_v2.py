@@ -5,6 +5,62 @@ from core.smartstake_connect import find_smartstakeid
 check_wallet = "one1prz9j6c406h6uhkyurlx9yq9h2e2zrpasr2saf"
 
 
+def get_choices(eth_add, votes):
+    for x in votes:
+        if x["voter"] == eth_add:
+            return x["choice"]
+
+
+def call_snapshot_graph(args, num=100, fn=""):
+    graph_params = {
+        "operationName": "Votes",
+        "variables": {
+            "id": args[1],
+            "orderBy": "vp",
+            "orderDirection": "desc",
+            "first": num,
+            "skip": 10,
+        },
+        "query": """query Votes($id: String!, $first: Int, $skip: Int, $orderBy: String, $orderDirection: OrderDirection, $voter: String) {
+  votes(
+    first: $first
+    skip: $skip
+    where: {proposal: $id, vp_gt: 0, voter: $voter}
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    ipfs
+    voter
+    choice
+    vp
+    vp_by_strategy
+  }
+}""",
+    }
+
+    log.info(snapshot_graph)
+
+    response = post(snapshot_graph, json=graph_params)
+    status = response.status_code
+    log.info(response)
+    d = response.text
+    voted = []
+    if status == 200:
+        try:
+            d = response.json()["data"]["votes"]
+            voted = [x["voter"] for x in d]
+            res = True
+            with open(f"{fn}.json", "w") as j:
+                json.dump(d, j, indent=4)
+        except json.decoder.JSONDecodeError as e:
+            log.error(e)
+    else:
+        log.error(f"Cannot connect to API < {status} >  Error: {d[:20]}...")
+
+    log.info(voted)
+    return res, voted, d
+
+
 def get_validator_voting_info(
     fn: str,
     vote_address_args: str,
@@ -15,12 +71,12 @@ def get_validator_voting_info(
     check_wallet: bool = False,
 ) -> None:
 
-    vote_address = gov_base.format(*vote_address_args)
-    vote_address_api = snapshot_api_base.format(*vote_address_args)
+    vote_address = snaphot_org_base.format(*vote_address_args)
 
-    log.info(vote_address)
+    res, voted, voted_results = call_snapshot_graph(
+        vote_address_args, fn=f"{vote_name}-{fn}"
+    )
 
-    res, voted, voted_results = call_api(vote_address_api, fn=f"{vote_name}-{fn}")
     if not res:
         log.error("Error Connecting, Shutting Down.. ")
         return False
@@ -68,7 +124,7 @@ def get_validator_voting_info(
 
             # Already Voted, Check Weight
             else:
-                choices = voted_results[eth_add]["msg"]["payload"]["choice"]
+                choices = get_choices(eth_add, voted_results)
                 if not isinstance(choices, (dict, list)):
                     choices = {choices: 100}
 
@@ -157,8 +213,6 @@ if __name__ == "__main__":
             "0x4e51760f36e580e7ae6d7f95a91ff51e5e310e9da1a0b4619cfdcb4e978a9e18",
         ),
     }
-
-    # {"operationName":"Votes","variables":{"id":"0x4e51760f36e580e7ae6d7f95a91ff51e5e310e9da1a0b4619cfdcb4e978a9e18","orderBy":"vp","orderDirection":"desc","first":10,"skip":10},"query":"query Votes($id: String!, $first: Int, $skip: Int, $orderBy: String, $orderDirection: OrderDirection, $voter: String) {\n  votes(\n    first: $first\n    skip: $skip\n    where: {proposal: $id, vp_gt: 0, voter: $voter}\n    orderBy: $orderBy\n    orderDirection: $orderDirection\n  ) {\n    ipfs\n    voter\n    choice\n    vp\n    vp_by_strategy\n  }\n}"}
 
     for vote_name, vote_address_args in votes_to_check.items():
         create_folders_change_handler(vote_name)

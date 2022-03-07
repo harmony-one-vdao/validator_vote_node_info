@@ -24,15 +24,19 @@ prometheus = "https://gateway.harmony.one/api/v1/metrics"
 
 # harmony_api = "https://api.harmony.one"
 # harmony_api = 'https://a.api.s0.t.hmny.io'
-harmony_api = "https://rpc.s0.t.hmny.io"
+# harmony_api = "https://rpc.s0.t.hmny.io"
 # harmony_api = 'https://api.s0.t.hmny.io/'
 # harmony_api = "https://g.s0.t.hmny.io"
+harmony_api = "https://rpc.hermesdefi.io/"
 
 network_info_lite = "https://api.stake.hmny.io/networks/harmony/network_info_lite"
 staking_info_url = "https://api.stake.hmny.io/networks/mainnet/validators"
 
 snapshot_api_base = "https://snapshot.hmny.io/api/{}/proposal/{}"
 gov_base = "https://gov.harmony.one/#/{}/proposal/{}"
+
+snapshot_graph = "https://hub.snapshot.org/graphql"  # POST
+snaphot_org_base = "https://snapshot.org/#/{}/proposal/{}"
 
 
 smartstake_validator_list_fn = os.path.join("examples", "validator_list")

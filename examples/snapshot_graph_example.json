@@ -1,0 +1,374 @@
+{
+    "data": {
+        "votes": [
+            {
+                "ipfs": "QmXtM96wE5qJXCq9ZKUCyU9RjtHkkYKqxaZdU8fVUCVpsW",
+                "voter": "0x7A69a8399740fcB54a182957181a5FCA675e1eF5",
+                "choice": [
+                    7
+                ],
+                "vp": 412.8745099350119,
+                "vp_by_strategy": [
+                    412.8745099350119
+                ]
+            },
+            {
+                "ipfs": "QmfBn3qp57xr5mBXPZwYxX6nyjZ5o7hGxmWdkdRryYFfNH",
+                "voter": "0x863Ed6128a17a264BE6Dd61f8751e04028153dAC",
+                "choice": [
+                    2
+                ],
+                "vp": 269.4535749277316,
+                "vp_by_strategy": [
+                    269.4535749277316
+                ]
+            },
+            {
+                "ipfs": "QmXc2LfEpVQHt9nCUYW3ax8M49npMMA9G4vPwnnvmUDYSw",
+                "voter": "0x68CDBC5f6F79cb6D3b77fA6246c7b477E4aC545b",
+                "choice": [
+                    2
+                ],
+                "vp": 116.41363681101608,
+                "vp_by_strategy": [
+                    116.41363681101608
+                ]
+            },
+            {
+                "ipfs": "QmbqD8UVegikpNqWAVVgYyWAW5EhAGDk92njrqxfTrq6sm",
+                "voter": "0x53D8637E3F0490bf365a0Cf8A0c6b4D9A4a02c4a",
+                "choice": [],
+                "vp": 98.84379625518564,
+                "vp_by_strategy": [
+                    98.84379625518564
+                ]
+            },
+            {
+                "ipfs": "QmWLeF7KEQkz4LPvi5722ibMz84MtnSL5FNRki5QTaePvJ",
+                "voter": "0x63e2FDEBc347466bd337db827f4A0Ae104f3e8f2",
+                "choice": [
+                    2
+                ],
+                "vp": 46.66014130119366,
+                "vp_by_strategy": [
+                    46.66014130119366
+                ]
+            },
+            {
+                "ipfs": "QmTmqpZGdApT76M5YcZFpehpj6SVmqAF6vam2HRx57BpwC",
+                "voter": "0x5d6fBaD93C7772555581a22c39E483757B4955C5",
+                "choice": [
+                    2
+                ],
+                "vp": 41.62618928295818,
+                "vp_by_strategy": [
+                    41.62618928295818
+                ]
+            },
+            {
+                "ipfs": "QmXjvaPFLtZiuiNgQWnJsf3r54L9KinrP6VrA4zkZ6SpBT",
+                "voter": "0x793a4caBB6102AA30028e48CB552D8B290dAFD68",
+                "choice": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7
+                ],
+                "vp": 41.359899527081566,
+                "vp_by_strategy": [
+                    41.359899527081566
+                ]
+            },
+            {
+                "ipfs": "QmQRLyEoy9APG37uE2Bige5ZZ3SZe6Gu56g6mafmiRvAPY",
+                "voter": "0xA7b20eEDa7CD9C486f2BD9c32D2a0D0772E9ce83",
+                "choice": [
+                    7,
+                    1
+                ],
+                "vp": 35.012018911,
+                "vp_by_strategy": [
+                    35.012018911
+                ]
+            },
+            {
+                "ipfs": "QmNXfpZFTL6uG5VsAewE4irbr5XP448swpWF82FmP9xcGE",
+                "voter": "0xC5375B0A1Da8933c94b7d6d537FEb2c4C80d9347",
+                "choice": [
+                    2
+                ],
+                "vp": 32.6579957539265,
+                "vp_by_strategy": [
+                    32.6579957539265
+                ]
+            },
+            {
+                "ipfs": "QmchardBvUhXNxAUg78vr5qK2raSi6d9QgyMaSe3EoQpHE",
+                "voter": "0x542422766519CE9cb6D6206b5013FD21b38F02e4",
+                "choice": [
+                    1,
+                    2,
+                    3,
+                    5,
+                    6,
+                    7,
+                    4
+                ],
+                "vp": 29.294052364513046,
+                "vp_by_strategy": [
+                    29.29405236451305
+                ]
+            },
+            {
+                "ipfs": "QmZaNVvDFJV8ejRW317LV2SfrM7VvHDASzySvD1gihxYcx",
+                "voter": "0x91DE9d9eF895Ddf2B754A780ed1Bb783a18fc28a",
+                "choice": [
+                    2
+                ],
+                "vp": 25.086365302119678,
+                "vp_by_strategy": [
+                    25.08636530211968
+                ]
+            },
+            {
+                "ipfs": "QmZ9VaiizN4fG2MpYFvMa27zKjjskCAc7rwRx5LUdeS1L9",
+                "voter": "0xbB84776aB1E7050579ed34613Acc8626C1c186a6",
+                "choice": [
+                    2
+                ],
+                "vp": 23.761051859402485,
+                "vp_by_strategy": [
+                    23.761051859402485
+                ]
+            },
+            {
+                "ipfs": "QmUZxB9qNEgtBzUSormoBxUhFXc9HfaBqyVPTGHhi7Uu5T",
+                "voter": "0x8E5A053662B1db73efD5c91FA483364380200C2D",
+                "choice": [
+                    2
+                ],
+                "vp": 23.707848047,
+                "vp_by_strategy": [
+                    23.707848047
+                ]
+            },
+            {
+                "ipfs": "QmbN5RpMXzMJnKKmMDp59AVqJ7KgCo8wrxVbK26qXS2P5V",
+                "voter": "0xBBCB61eE75b4F6660a34f5059727FD1549C35576",
+                "choice": [
+                    2
+                ],
+                "vp": 20.48397707054436,
+                "vp_by_strategy": [
+                    20.48397707054436
+                ]
+            },
+            {
+                "ipfs": "QmWq5y5YWS1S7S4QA6bQNehcuX1S1nRCJ1jaHRN9dimw2q",
+                "voter": "0x6F47D8207a17FB23113F03F16BF3658c314cEfa2",
+                "choice": [
+                    1,
+                    6,
+                    3,
+                    2
+                ],
+                "vp": 10.70900670468053,
+                "vp_by_strategy": [
+                    10.70900670468053
+                ]
+            },
+            {
+                "ipfs": "QmTscd9XfRCxutaL7vbqBX8HJk3qUbJZPokykQxdn6A27w",
+                "voter": "0x21c8dAD48c19aCFEe6D70AaDDf78f9F55D5346C6",
+                "choice": [
+                    2
+                ],
+                "vp": 8.864167559898407,
+                "vp_by_strategy": [
+                    8.864167559898407
+                ]
+            },
+            {
+                "ipfs": "Qmd6QqRRhchp1mtn7AoNdxTVFHRUw7TcaAoiRwVLewyyDz",
+                "voter": "0x0d2875F698dB11d60bF32c272f6B16b487FcF9f9",
+                "choice": [
+                    2
+                ],
+                "vp": 6.540279788848236,
+                "vp_by_strategy": [
+                    6.540279788848236
+                ]
+            },
+            {
+                "ipfs": "QmaPLcNb7dPT9SZTrMLi9Afv3c1igCPADZFxtshxspGPJi",
+                "voter": "0xbFCC250e1d5603d144c7ce99834403B0452d2644",
+                "choice": [
+                    4,
+                    3,
+                    5,
+                    6,
+                    7,
+                    2,
+                    1
+                ],
+                "vp": 6.509830890951486,
+                "vp_by_strategy": [
+                    6.509830890951486
+                ]
+            },
+            {
+                "ipfs": "QmfDwHw6ndn4QfJbeSQUDye6BT7BiY5xQCXx1zkjHRLuKy",
+                "voter": "0xB63d6386cB25c908D570e7AA64488FC13B457116",
+                "choice": [
+                    2
+                ],
+                "vp": 6.31544460972773,
+                "vp_by_strategy": [
+                    6.31544460972773
+                ]
+            },
+            {
+                "ipfs": "QmUJq74xkGPCbdyM41x8jisXwgas2vyLHx56PG21dEsTaN",
+                "voter": "0x8eF5530Ed8EF2404356756EaC11BDA61929446aA",
+                "choice": [
+                    2
+                ],
+                "vp": 3.3007289238139084,
+                "vp_by_strategy": [
+                    3.3007289238139084
+                ]
+            },
+            {
+                "ipfs": "Qmb8oc7JL9CKEaXkfS9XR8pRJMThhYnVS4eA7KVtV8MP8e",
+                "voter": "0xE071D8A451Acd745ADd8B15451D35771513cc76F",
+                "choice": [
+                    2
+                ],
+                "vp": 2.983603050894885,
+                "vp_by_strategy": [
+                    2.983603050894885
+                ]
+            },
+            {
+                "ipfs": "QmWSvaM2Jw9iNkSHmU9EwsWLrM4n142LUhRukb44EaNSeY",
+                "voter": "0x54019E9ecaBC581E0acf08B1228B94A395Ba457b",
+                "choice": [
+                    7,
+                    6,
+                    5,
+                    4,
+                    3,
+                    2,
+                    1
+                ],
+                "vp": 2.4843058390418595,
+                "vp_by_strategy": [
+                    2.4843058390418595
+                ]
+            },
+            {
+                "ipfs": "QmYdWsHsapgiaWtvmb9YTP3ZCGbg9GUxst46YFWcyGqp2X",
+                "voter": "0x0891879f8731A45540784038b9597aDEd7a91d5e",
+                "choice": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7
+                ],
+                "vp": 1.99469074,
+                "vp_by_strategy": [
+                    1.99469074
+                ]
+            },
+            {
+                "ipfs": "QmZKVJT8F7KXzQ3d73UdRT6ctvQZ8hrvncXPXHZZ9yo2b5",
+                "voter": "0x99cb291AB0305Bd200365804820E6C2052d67eE4",
+                "choice": [
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    2,
+                    1
+                ],
+                "vp": 1.9725218,
+                "vp_by_strategy": [
+                    1.9725218
+                ]
+            },
+            {
+                "ipfs": "QmdTUvFNuWA489jVR8spfTuqTnxgtLcUUUBbD9Ys66YyKB",
+                "voter": "0x588e2cda52B02a85d9dc3d150778183E14A078e8",
+                "choice": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7
+                ],
+                "vp": 1.262827680715292,
+                "vp_by_strategy": [
+                    1.262827680715292
+                ]
+            },
+            {
+                "ipfs": "QmdHKyDoNsu2Duwc8TcCnbUwueWXDtHwGUErVY26wfaBek",
+                "voter": "0x8E1BE8bb9d303Ec605b85A7ad4de923B8b9fc6e8",
+                "choice": [
+                    2
+                ],
+                "vp": 0.98928246,
+                "vp_by_strategy": [
+                    0.98928246
+                ]
+            },
+            {
+                "ipfs": "QmagTwqmSc1jVCdk3Apfh29rZCgDnrKLKdYLJYsbDihdQE",
+                "voter": "0xC169b423CD2a37566EE7aa8184DDb0C16b79ce8D",
+                "choice": [
+                    2
+                ],
+                "vp": 0.9608367,
+                "vp_by_strategy": [
+                    0.9608367
+                ]
+            },
+            {
+                "ipfs": "QmUE6kjJ2hHcu38GTDWcXDcGfndsonxS5LTrRrYDso3jtZ",
+                "voter": "0xFE6F41Ef98fBa9CD1d0e7F9A7D58069374517264",
+                "choice": [
+                    2,
+                    6,
+                    4
+                ],
+                "vp": 0.6571024876559642,
+                "vp_by_strategy": [
+                    0.6571024876559642
+                ]
+            },
+            {
+                "ipfs": "QmTkKSB9p9d1KKmtKEmZkNH32ph9FZt35H76xVdCjX6H4u",
+                "voter": "0xe283d5a23f53847383393067595C685d1D1eA27e",
+                "choice": [
+                    2,
+                    3,
+                    1,
+                    6
+                ],
+                "vp": 0.1947001763013318,
+                "vp_by_strategy": [
+                    0.1947001763013318
+                ]
+            }
+        ]
+    }
+}
