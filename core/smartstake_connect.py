@@ -40,6 +40,7 @@ def find_smartstakeid(one_address, d: dict) -> int:
                     smartstake_address_summary.format(hPoolId),
                     smartstake_address_blskeys.format(hPoolId),
                 )
+        return "N/A", "N/A"
     except TypeError:
         log.info("Smartstake Token Not Valid.  Please obtain a new one")
         return "N/A", "N/A"

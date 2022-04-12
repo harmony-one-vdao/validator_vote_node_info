@@ -214,6 +214,8 @@ def display_blskey_stats(
     elected: int,
     elected_is_updated: int,
     elected_not_updated: int,
+    unknown: int,
+    elected_unknown: int,
     display_check: str,
     version: str,
 ) -> None:
@@ -232,33 +234,42 @@ def display_blskey_stats(
     #
     perc_not_updated = percentage(not_updated, active_validators)
     perc_updated = percentage(is_updated, active_validators)
+    perc_unknown_updated = percentage(unknown, active_validators)
 
     elec_perc_not_updated = percentage(elected_not_updated, elected)
     elec_perc_updated = percentage(elected_is_updated, elected)
+    elec_perc_unknown = percentage(elected_unknown, elected)
 
     log.info(f"\nNode Version: {version}")
     log.info(f"\n\tNumber Active Validators           ::  {active_validators} ")
     log.info(f"\tHas Updated to latest version      ::  {is_updated:,}")
-    log.info(f"\tNot Updated to latest version      ::  {not_updated} \n")
+    log.info(f"\tNot Updated to latest version      ::  {not_updated} ")
+    log.info(f"\tUnknown version                    ::  {unknown} \n")
     log.info(f"\tHas Updated to latest version %    ::  {perc_updated} % ")
-    log.info(f"\tNot Updated to latest version %    ::  {perc_not_updated} % \n")
+    log.info(f"\tNot Updated to latest version %    ::  {perc_not_updated} % ")
+    log.info(f"\tUnknown version %                  ::  {perc_unknown_updated} %\n")
 
     log.info(f"\n\tNumber Elected Validators          ::  {elected} ")
     log.info(f"\tHas Updated & Elected              ::  {elected_is_updated:,}")
     log.info(f"\tNot Updated & Elected              ::  {elected_not_updated} \n")
+    log.info(f"\tUnknown version & Elected          ::  {elected_unknown} \n")
     log.info(f"\tHas Updated & Elected %            ::  {elec_perc_updated} % ")
-    log.info(f"\tNot Updated & Elected %            ::  {elec_perc_not_updated} % \n")
+    log.info(f"\tNot Updated & Elected %            ::  {elec_perc_not_updated} %")
+    log.info(f"\tUnknown version & Elected %        ::  {elec_perc_unknown}% \n")
     log.info(display_check)
 
 
-def save_csv(data_folder: str, fn: str, data: list, header: list) -> None:
-    with open(
-        join("data", data_folder, fn), "w", newline="", encoding="utf-8"
-    ) as csvfile:
-        w = csv.DictWriter(csvfile, fieldnames=header, delimiter=",")
-        w.writeheader()
-        for x in data:
-            w.writerow(x)
+def save_csv(data_folder: str, fn: str, data: list, header: list, inc: int = 1) -> None:
+    try:
+        with open(
+            join("data", data_folder, fn), "w", newline="", encoding="utf-8"
+        ) as csvfile:
+            w = csv.DictWriter(csvfile, fieldnames=header, delimiter=",")
+            w.writeheader()
+            for x in data:
+                w.writerow(x)
+    except PermissionError:  # file is open, rename and try again.
+        save_csv(data_folder, f"{inc}-{fn}", data, header, inc=inc + 1)
 
 
 def save_copypasta(

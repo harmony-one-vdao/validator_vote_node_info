@@ -68,8 +68,4 @@ def get_metrics(
 if __name__ == "__main__":
     metrics_folder = "Weekly-Metrics"
     create_folders_change_handler(metrics_folder)
-    get_metrics(
-        metrics_fn,
-        num_pages=100,
-        save_json_data=True,
-    )
+    get_metrics(metrics_fn, num_pages=100, save_json_data=True)
